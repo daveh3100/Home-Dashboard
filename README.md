@@ -1,4 +1,4 @@
-[index.html](https://github.com/user-attachments/files/26333424/index.html)
+[index.html](https://github.com/user-attachments/files/26333736/index.html)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -536,5 +536,3 @@
     </script>
 </body>
 </html>
-
-"7 Day Calendar Feed"
