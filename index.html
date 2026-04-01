@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,13 +82,13 @@
 
         /* --- Tab Content Layouts --- */
         .tab-content {
-            display: none; /* Hidden by default */
+            display: none; 
             grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
             height: 100%;
             overflow: hidden;
         }
-        .tab-content.active { display: grid; } /* Shows when active */
+        .tab-content.active { display: grid; } 
 
         .panel {
             background-color: var(--panel-bg);
@@ -108,7 +107,14 @@
             flex-shrink: 0; 
         }
 
-        /* --- Calendar Elements --- */
+        /* --- Standard List Calendar --- */
+        #calendar-search {
+            width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px;
+            border: 1px solid #333; background: rgba(0,0,0,0.2); color: var(--text-main);
+            font-family: var(--font-family); box-sizing: border-box; outline: none; flex-shrink: 0;
+        }
+        #calendar-search:focus { border-color: var(--accent-yellow); }
+
         .calendar-scroll-area { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
         .agenda-day { margin-bottom: 20px; }
         .agenda-day h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: var(--text-muted); text-transform: uppercase; }
@@ -128,16 +134,39 @@
         .badge-jake { color: var(--accent-jake); }
         .badge-ryan { color: var(--accent-ryan); }
 
-        #calendar-search {
-            width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px;
-            border: 1px solid #333; background: rgba(0,0,0,0.2); color: var(--text-main);
-            font-family: var(--font-family); box-sizing: border-box; outline: none; flex-shrink: 0; font-size: 1rem;
+        /* --- Full Month Grid Calendar --- */
+        .calendar-grid-header {
+            display: grid; grid-template-columns: repeat(7, 1fr); text-align: center;
+            font-weight: bold; color: var(--text-muted); margin-bottom: 10px; padding-right: 8px;
         }
-        #calendar-search:focus { border-color: var(--accent-yellow); }
+        .calendar-grid-body {
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+            grid-auto-rows: minmax(70px, 1fr); flex-grow: 1; overflow-y: auto; padding-right: 8px;
+        }
+        .calendar-cell {
+            background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 6px;
+            padding: 5px; display: flex; flex-direction: column; overflow: hidden;
+        }
+        .calendar-cell.today { border-color: var(--accent-yellow); background: rgba(255, 197, 47, 0.05); }
+        .calendar-cell.empty { background: transparent; border: none; }
+        .cell-date { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 4px; text-align: right; font-weight: bold;}
+        .calendar-cell.today .cell-date { color: var(--accent-yellow); }
+        
+        .cell-events { display: flex; flex-direction: column; gap: 3px; overflow-y: auto; flex-grow: 1; }
+        .cell-events::-webkit-scrollbar { display: none; }
+        .mini-event {
+            font-size: 0.7rem; padding: 3px 5px; border-radius: 4px; white-space: nowrap;
+            overflow: hidden; text-overflow: ellipsis; color: #fff;
+            background: rgba(255, 197, 47, 0.2); border-left: 3px solid var(--accent-yellow);
+        }
+        .mini-event.kristi { background: rgba(255, 118, 117, 0.2); border-left-color: var(--accent-kristi); }
+        .mini-event.jake { background: rgba(0, 184, 148, 0.2); border-left-color: var(--accent-jake); }
+        .mini-event.ryan { background: rgba(162, 155, 254, 0.2); border-left-color: var(--accent-ryan); }
 
-        #bdt-container {
+        /* --- BDT Tracker --- */
+        .bdt-container {
             margin-top: 15px; padding-top: 10px; border-top: 1px solid #333;
-            font-size: 0.85rem; color: var(--text-muted); max-height: 150px; overflow-y: auto; flex-shrink: 0;
+            font-size: 0.85rem; color: var(--text-muted); overflow-y: auto; flex-shrink: 0;
         }
         .bdt-item { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #333;}
         .bdt-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
@@ -182,8 +211,8 @@
             overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 8px;
             padding: 10px; margin-bottom: 15px; border: 1px solid #333;
         }
-        .box-score-container { max-height: 300px; }
-        .schedule-container { max-height: 250px; }
+        .box-score-container { max-height: 250px; }
+        .schedule-container { max-height: 180px; }
         
         .box-score-header {
             font-size: 0.9rem; color: var(--accent-yellow); border-bottom: 1px solid #444;
@@ -192,19 +221,11 @@
         .box-score-header:first-child { margin-top: 0; }
         
         .stats-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .stats-table th, .stats-table td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #333; }
+        .stats-table th, .stats-table td { text-align: left; padding: 6px; border-bottom: 1px solid #333; }
         .stats-table th { color: var(--text-muted); font-weight: normal; }
         .stats-table td:not(:first-child), .stats-table th:not(:first-child) { text-align: right; }
         .schedule-table th, .schedule-table td { text-align: left !important; }
         .stats-table tr.highlight { background: rgba(255, 197, 47, 0.1); font-weight: bold; color: var(--accent-yellow); }
-
-        /* Next Game Card (Home Tab) */
-        .next-game-card {
-            background: rgba(0,0,0,0.2); border: 1px solid #333; border-radius: 8px; padding: 15px; margin-bottom: 15px;
-        }
-        .next-game-opp { font-size: 1.2rem; font-weight: bold; color: var(--text-main); margin-bottom: 5px;}
-        .next-game-time { color: var(--accent-yellow); font-size: 1.1rem; margin-bottom: 10px;}
-        .next-game-pitchers { color: var(--text-muted); font-size: 0.9rem;}
 
     </style>
 </head>
@@ -217,7 +238,7 @@
         </div>
         
         <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('home')" id="btn-home">🏠 Daily Glance</button>
+            <button class="tab-btn active" onclick="switchTab('home')" id="btn-home">🏠 Main Dashboard</button>
             <button class="tab-btn" onclick="switchTab('sports')" id="btn-sports">⚾ Sports Hub</button>
             <button class="tab-btn" onclick="switchTab('calendar')" id="btn-calendar">📅 Full Calendar</button>
         </div>
@@ -227,10 +248,12 @@
 
     <div id="tab-home" class="tab-content active">
         <div class="panel">
-            <h2>📅 Up Next</h2>
-            <div id="home-calendar-container" class="calendar-scroll-area">
+            <h2>📅 Family Calendar</h2>
+            <input type="text" id="calendar-search" placeholder="Search upcoming events..." autocomplete="off">
+            <div id="calendar-container" class="calendar-scroll-area">
                 <p style="color: var(--text-muted);">Fetching events...</p>
             </div>
+            <div id="bdt-container-home" class="bdt-container" style="max-height: 150px;"></div>
         </div>
 
         <div class="panel">
@@ -259,22 +282,10 @@
         </div>
 
         <div class="panel">
-            <h2>⚾ Brewers On Deck</h2>
-            <div id="home-next-game-container">
-                <p style="color: var(--text-muted);">Loading upcoming game...</p>
-            </div>
-            <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid #333; text-align: center;">
-                <span style="color: var(--text-muted); font-size: 0.9rem;">Tap 'Sports Hub' for full box scores & standings</span>
-            </div>
-        </div>
-    </div>
-
-    <div id="tab-sports" class="tab-content">
-        <div class="panel">
-            <h2>⚾ Last Game Box Score</h2>
-            <div class="sports-section" style="flex-grow: 1; display: flex; flex-direction: column;">
+            <h2>⚾ Milwaukee Brewers</h2>
+            <div class="sports-section">
                 <h3 id="last-game-header">Loading Last Game...</h3>
-                <div class="box-score-container" style="flex-grow: 1;">
+                <div class="box-score-container">
                     <div class="box-score-header">Brewers Batting</div>
                     <table class="stats-table" id="brewers-batting-table">
                         <tr><th>Player</th><th>AB</th><th>R</th><th>H</th><th>RBI</th></tr>
@@ -288,27 +299,45 @@
                     </table>
                 </div>
             </div>
-        </div>
 
-        <div class="panel">
-            <h2>⚾ 7-Day Schedule</h2>
-            <div class="sports-section" style="flex-grow: 1;">
-                <div class="schedule-container" id="upcoming-schedule-container" style="max-height: 100%; height: 100%;">
+            <div class="sports-section">
+                <h3>Upcoming Schedule (7 Days)</h3>
+                <div class="schedule-container" id="upcoming-schedule-container">
                     <table class="stats-table schedule-table">
                         <tr><td style="text-align:center;">Loading schedule...</td></tr>
                     </table>
                 </div>
             </div>
-        </div>
 
-        <div class="panel">
-            <h2>🏆 NL Central Standings</h2>
-            <div class="sports-section">
+            <div class="sports-section" style="margin-top: auto;">
+                <h3>NL Central Standings</h3>
                 <table class="stats-table" id="nl-central-table">
                     <tr><th>Team</th><th>W</th><th>L</th><th>GB</th></tr>
                     <tr><td colspan="4" style="text-align:center;">Loading standings...</td></tr>
                 </table>
             </div>
+        </div>
+    </div>
+
+    <div id="tab-sports" class="tab-content">
+        <div class="panel">
+            <h2>⚾ Last Game Box Score</h2>
+            <div class="sports-section" style="flex-grow: 1; display: flex; flex-direction: column;">
+                <h3 id="last-game-header-tab2">Loading Last Game...</h3>
+                <div class="box-score-container" style="flex-grow: 1; max-height: 100%;" id="box-score-clone">
+                    </div>
+            </div>
+        </div>
+        <div class="panel">
+            <h2>⚾ 7-Day Schedule</h2>
+            <div class="sports-section" style="flex-grow: 1;">
+                <div class="schedule-container" id="schedule-clone" style="max-height: 100%; height: 100%;">
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <h2>🏆 NL Central Standings</h2>
+            <div class="sports-section" id="standings-clone"></div>
             
             <div class="sports-section" style="margin-top: auto;">
                 <div style="background: rgba(0,0,0,0.2); border: 1px dashed #444; border-radius: 8px; padding: 20px; text-align: center; color: var(--text-muted);">
@@ -319,19 +348,27 @@
     </div>
 
     <div id="tab-calendar" class="tab-content">
-        <div class="panel" style="grid-column: span 2;">
-            <h2>📅 Family Master Schedule</h2>
-            <input type="text" id="calendar-search" placeholder="Search events up to 6 months out (e.g., 'Hockey', 'BDT', 'Vacation')..." autocomplete="off">
-            <div id="full-calendar-container" class="calendar-scroll-area">
-                <p style="color: var(--text-muted);">Fetching events...</p>
+        <div class="panel" style="grid-column: span 2; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                <h2 style="margin: 0; border: none; padding: 0;">📅 Full Month View</h2>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button onclick="changeMonth(-1)" class="tab-btn" style="padding: 6px 15px; background: rgba(0,0,0,0.2); border: 1px solid #333;">&larr; Prev</button>
+                    <span id="month-year-display" style="font-size: 1.3rem; font-weight: bold; color: var(--text-main); min-width: 160px; text-align: center;">Month Year</span>
+                    <button onclick="changeMonth(1)" class="tab-btn" style="padding: 6px 15px; background: rgba(0,0,0,0.2); border: 1px solid #333;">Next &rarr;</button>
+                </div>
             </div>
+            
+            <div class="calendar-grid-header">
+                <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+            </div>
+            <div id="month-grid-container" class="calendar-grid-body">
+                </div>
         </div>
 
         <div class="panel">
             <h2>🏷️ BDT Tracker</h2>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0;">Automatically scanning descriptions and titles for 'BDT'.</p>
-            <div id="bdt-container" style="max-height: 100%; flex-grow: 1;">
-                </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0;">Scanning all events for 'BDT'.</p>
+            <div id="bdt-container-tab3" class="bdt-container" style="max-height: 100%; flex-grow: 1; border-top: none;"></div>
         </div>
     </div>
 
@@ -339,21 +376,20 @@
         // ==========================================
         // CONFIGURATION
         // ==========================================
-        const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYsHgTPdd26ONrxTo4WUqy1ndz3kzWtQ2y98Sfr-x9ooGkLC2fh8umCnPJUy4xzEQN/exec'; // Paste your script URL here
+        const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/library/d/1xDbVUQnPajGKR7ti6pvgJDUq4MR5jKa_phe-SMQAF-CUfhSKAa2qdKsW/14'; // Paste your script URL here
 
         // --- Tab Switching Logic ---
         function switchTab(tabId) {
-            // Hide all contents
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            // Remove active state from all buttons
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            // Show selected content and highlight button
             document.getElementById(`tab-${tabId}`).classList.add('active');
             document.getElementById(`btn-${tabId}`).classList.add('active');
+            
+            // Re-render grid to ensure dimensions are correct when unhidden
+            if(tabId === 'calendar') renderMonthCalendar();
         }
 
-        // --- Live Clock Functionality ---
+        // --- Live Clock ---
         function updateClock() {
             const now = new Date();
             let hours = now.getHours();
@@ -368,11 +404,13 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // --- Live Calendar (Via Google Apps Script) ---
+        // --- Live Calendar (List & Grid) ---
         let globalCalendarEvents = []; 
+        let currentMonthView = new Date();
+        currentMonthView.setDate(1); // Set to 1st of current month
 
         async function fetchGoogleData() {
-            const calContainer = document.getElementById('home-calendar-container');
+            const calContainer = document.getElementById('calendar-container');
             
             if (GOOGLE_APP_SCRIPT_URL === 'YOUR_WEB_APP_URL_HERE') {
                 calContainer.innerHTML = `<p style="color: var(--accent-yellow); background: rgba(255, 197, 47, 0.1); padding: 15px; border-radius: 8px;">
@@ -383,141 +421,158 @@
             try {
                 const urlWithCacheBuster = GOOGLE_APP_SCRIPT_URL + "?t=" + new Date().getTime();
                 const res = await fetch(urlWithCacheBuster);
-                
                 if (!res.ok) throw new Error("Network response was not ok");
-                
                 const data = await res.json();
                 
                 globalCalendarEvents = data.events || [];
-                renderCalendars();
+                renderListCalendar();
+                renderMonthCalendar();
                 renderBDTList();
-
             } catch (error) {
                 console.error("Google Data fetch error:", error);
-                document.getElementById('home-calendar-container').innerHTML = `<p style="color: #ff6b6b;">Connection Blocked. Check Apps Script Authorization.</p>`;
-                document.getElementById('full-calendar-container').innerHTML = `<p style="color: #ff6b6b;">Connection Blocked.</p>`;
+                calContainer.innerHTML = `<p style="color: #ff6b6b; background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 8px;">
+                                          <b>Connection Blocked</b><br>Check Apps Script Authorization.</p>`;
             }
         }
 
-        function formatEventHtml(evt) {
-            let eventClass = 'event';
-            let badge = '';
-            
-            if (evt.owner !== 'Dave') {
-                const ownerLower = evt.owner.toLowerCase();
-                const initial = evt.owner.charAt(0).toUpperCase();
-                eventClass = `event ${ownerLower}`;
-                badge = `<span class="owner-badge badge-${ownerLower}">(${initial})</span>`;
-            }
-
-            let timeStr = "All Day";
-            if (!evt.isAllDay) {
-                const d = new Date(evt.time);
-                timeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-            }
-            
-            return `
-                <div class="${eventClass}">
-                    <div class="event-time">${timeStr}</div>
-                    <div class="event-title">${badge}${evt.title}</div>
-                </div>`;
-        }
-
-        function getDayLabel(dateString) {
-            const d = new Date(dateString);
-            const today = new Date();
-            const tomorrow = new Date(); tomorrow.setDate(today.getDate() + 1);
-            
-            if (d.toDateString() === today.toDateString()) return "Today";
-            if (d.toDateString() === tomorrow.toDateString()) return "Tomorrow";
-            return d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
-        }
-
-        function renderCalendars() {
-            const homeContainer = document.getElementById('home-calendar-container');
-            const fullContainer = document.getElementById('full-calendar-container');
+        // 1. Renders the classic list on Tab 1
+        function renderListCalendar() {
+            const container = document.getElementById('calendar-container');
             const searchQuery = document.getElementById('calendar-search').value.toLowerCase();
             
-            const now = new Date();
-            const tomorrowEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2); // End of tomorrow
-            const sevenDaysFromNow = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
-
-            // --- 1. Render Home Tab (Today & Tomorrow Only) ---
-            let homeEvents = globalCalendarEvents.filter(evt => new Date(evt.time) < tomorrowEnd);
-            
-            if (homeEvents.length === 0) {
-                homeContainer.innerHTML = `<p style="color: var(--text-muted); font-style: italic;">Nothing scheduled for today or tomorrow.</p>`;
-            } else {
-                let homeHtml = "";
-                let currentDay = "";
-                homeEvents.forEach(evt => {
-                    const dateStr = new Date(evt.time).toDateString();
-                    if (dateStr !== currentDay) {
-                        if (currentDay !== "") homeHtml += `</div>`; // Close previous day
-                        homeHtml += `<div class="agenda-day"><h3>${getDayLabel(dateStr)}</h3>`;
-                        currentDay = dateStr;
-                    }
-                    homeHtml += formatEventHtml(evt);
-                });
-                if (currentDay !== "") homeHtml += `</div>`;
-                homeContainer.innerHTML = homeHtml;
-            }
-
-            // --- 2. Render Full Calendar Tab (7 Days default, or search 180 days) ---
-            let fullEvents = globalCalendarEvents;
-            
+            let filteredEvents = globalCalendarEvents;
             if (searchQuery) {
-                fullEvents = globalCalendarEvents.filter(evt => 
+                filteredEvents = globalCalendarEvents.filter(evt => 
                     evt.title.toLowerCase().includes(searchQuery) || 
                     (evt.description && evt.description.toLowerCase().includes(searchQuery))
                 );
-            } else {
-                // If no search, limit to 7 days so it doesn't get overwhelmingly long
-                fullEvents = globalCalendarEvents.filter(evt => new Date(evt.time) <= sevenDaysFromNow);
             }
 
-            if (fullEvents.length === 0) {
-                fullContainer.innerHTML = `<p style="color: var(--text-muted); font-style: italic;">No matching events found.</p>`;
-            } else {
-                let fullHtml = "";
-                let currentDayFull = "";
-                fullEvents.forEach(evt => {
-                    const dateStr = new Date(evt.time).toDateString();
-                    if (dateStr !== currentDayFull) {
-                        if (currentDayFull !== "") fullHtml += `</div>`; 
-                        fullHtml += `<div class="agenda-day"><h3>${getDayLabel(dateStr)}</h3>`;
-                        currentDayFull = dateStr;
-                    }
-                    fullHtml += formatEventHtml(evt);
-                });
-                if (currentDayFull !== "") fullHtml += `</div>`;
-                fullContainer.innerHTML = fullHtml;
+            if (filteredEvents.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); font-style: italic;">No matching events found.</p>`;
+                return;
             }
+
+            const groupedEvents = {};
+            filteredEvents.forEach(evt => {
+                const dateStr = new Date(evt.time).toDateString();
+                if (!groupedEvents[dateStr]) groupedEvents[dateStr] = [];
+                groupedEvents[dateStr].push(evt);
+            });
+
+            const formatTime = (dateString, isAllDay) => {
+                if (isAllDay) return "All Day";
+                return new Date(dateString).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            };
+
+            const getDayLabel = (dateString) => {
+                const d = new Date(dateString);
+                const today = new Date();
+                const tomorrow = new Date(); tomorrow.setDate(today.getDate() + 1);
+                if (d.toDateString() === today.toDateString()) return "Today";
+                if (d.toDateString() === tomorrow.toDateString()) return "Tomorrow";
+                return d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+            };
+
+            let htmlString = "";
+            const sortedDates = Object.keys(groupedEvents).sort((a, b) => new Date(a) - new Date(b));
+            
+            sortedDates.forEach(dateStr => {
+                htmlString += `<div class="agenda-day"><h3>${getDayLabel(dateStr)}</h3>`;
+                groupedEvents[dateStr].forEach(evt => {
+                    let ownerLower = evt.owner.toLowerCase();
+                    let badge = ownerLower !== 'dave' ? `<span class="owner-badge badge-${ownerLower}">(${evt.owner.charAt(0).toUpperCase()})</span>` : '';
+                    let eventClass = ownerLower !== 'dave' ? `event ${ownerLower}` : 'event';
+                    
+                    htmlString += `
+                        <div class="${eventClass}">
+                            <div class="event-time">${formatTime(evt.time, evt.isAllDay)}</div>
+                            <div class="event-title">${badge}${evt.title}</div>
+                        </div>`;
+                });
+                htmlString += `</div>`;
+            });
+
+            container.innerHTML = htmlString;
         }
 
+        // 2. Renders the Paper Calendar Grid on Tab 3
+        function changeMonth(offset) {
+            currentMonthView.setMonth(currentMonthView.getMonth() + offset);
+            renderMonthCalendar();
+        }
+
+        function renderMonthCalendar() {
+            const container = document.getElementById('month-grid-container');
+            const year = currentMonthView.getFullYear();
+            const month = currentMonthView.getMonth();
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            
+            document.getElementById('month-year-display').textContent = `${monthNames[month]} ${year}`;
+
+            const firstDay = new Date(year, month, 1).getDay(); // 0-6 (Sun-Sat)
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+
+            let gridHtml = "";
+
+            // Empty cells before the 1st
+            for (let i = 0; i < firstDay; i++) {
+                gridHtml += `<div class="calendar-cell empty"></div>`;
+            }
+
+            // Actual days
+            for (let d = 1; d <= daysInMonth; d++) {
+                const cellDate = new Date(year, month, d);
+                const isToday = cellDate.toDateString() === today.toDateString();
+                const todayClass = isToday ? 'today' : '';
+
+                let cellHtml = `<div class="calendar-cell ${todayClass}"><div class="cell-date">${d}</div><div class="cell-events">`;
+
+                // Find events for this specific day
+                const dayEvents = globalCalendarEvents.filter(evt => {
+                    const eDate = new Date(evt.time);
+                    return eDate.getFullYear() === year && eDate.getMonth() === month && eDate.getDate() === d;
+                });
+
+                dayEvents.forEach(evt => {
+                    let ownerClass = evt.owner.toLowerCase() === 'dave' ? '' : evt.owner.toLowerCase();
+                    let timeStr = evt.isAllDay ? "" : new Date(evt.time).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'});
+                    let displayTitle = (timeStr ? timeStr + ' ' : '') + evt.title;
+                    cellHtml += `<div class="mini-event ${ownerClass}" title="${evt.title}">${displayTitle}</div>`;
+                });
+
+                cellHtml += `</div></div>`;
+                gridHtml += cellHtml;
+            }
+
+            container.innerHTML = gridHtml;
+        }
+
+        // 3. Populates BDT Trackers on both Tabs
         function renderBDTList() {
-            const bdtContainer = document.getElementById('bdt-container');
             const bdtEvents = globalCalendarEvents.filter(evt => 
                 (evt.description && evt.description.includes('BDT')) || 
                 (evt.title && evt.title.includes('BDT'))
             );
             
+            let html = "";
             if (bdtEvents.length === 0) {
-                bdtContainer.innerHTML = `<div style="font-style: italic;">No BDT notes found in upcoming events.</div>`;
-                return;
+                html = `<div style="font-style: italic;">No BDT notes found.</div>`;
+            } else {
+                html += `<div style="margin-bottom: 8px; font-weight: bold; color: var(--accent-yellow); text-transform: uppercase;">Upcoming BDT Events:</div>`;
+                bdtEvents.forEach(evt => {
+                    const dateStr = new Date(evt.time).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                    html += `<div class="bdt-item"><strong>${evt.title}</strong><span style="color: var(--text-muted);">${dateStr}</span></div>`;
+                });
             }
             
-            let html = "";
-            bdtEvents.forEach(evt => {
-                const eventDate = new Date(evt.time);
-                const dateStr = eventDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-                html += `<div class="bdt-item"><strong>${evt.title}</strong><span style="color: var(--text-muted);">${dateStr}</span></div>`;
-            });
-            
-            bdtContainer.innerHTML = html;
+            // Inject into both tabs
+            document.getElementById('bdt-container-home').innerHTML = html;
+            document.getElementById('bdt-container-tab3').innerHTML = html;
         }
 
-        document.getElementById('calendar-search').addEventListener('input', renderCalendars);
+        document.getElementById('calendar-search').addEventListener('input', renderListCalendar);
 
         fetchGoogleData();
         setInterval(fetchGoogleData, 900000); // 15 mins
@@ -626,60 +681,7 @@
                     if (completedGames.length > 0) lastGame = completedGames[completedGames.length - 1];
                 }
 
-                // A. Process Upcoming Games for Home Tab (Next Game) & Sports Tab (Schedule)
-                const homeNextGameContainer = document.getElementById('home-next-game-container');
-                let scheduleHtml = `<table class="stats-table schedule-table">
-                    <tr><th>Date</th><th>Opponent</th><th>Time</th><th>Probable Pitchers</th></tr>`;
-
-                if (upcomingGames.length === 0) {
-                    homeNextGameContainer.innerHTML = `<p style="color: var(--text-muted); font-style: italic;">No games scheduled right now.</p>`;
-                    scheduleHtml += `<tr><td colspan="4" style="text-align:center; padding: 15px;">No games scheduled in the next 7 days.</td></tr>`;
-                } else {
-                    // Populate Next Game Card on Home Tab
-                    const nextGame = upcomingGames[0];
-                    const isNextHome = nextGame.teams.home.team.id === teamId;
-                    const nextOpp = isNextHome ? nextGame.teams.away.team.name : nextGame.teams.home.team.name;
-                    const nextVsAt = isNextHome ? 'vs' : '@';
-                    const nextDate = new Date(nextGame.gameDate);
-                    const nextTimeStr = nextDate.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'});
-                    const nextDateStr = nextDate.toLocaleDateString([], {weekday: 'long', month: 'short', day: 'numeric'});
-                    
-                    const getLastName = (fullName) => fullName ? fullName.split(' ').pop() : 'TBD';
-                    const nextAwayP = nextGame.teams.away.probablePitcher ? getLastName(nextGame.teams.away.probablePitcher.fullName) : 'TBD';
-                    const nextHomeP = nextGame.teams.home.probablePitcher ? getLastName(nextGame.teams.home.probablePitcher.fullName) : 'TBD';
-
-                    homeNextGameContainer.innerHTML = `
-                        <div class="next-game-card">
-                            <div class="next-game-time">${nextDateStr} • ${nextTimeStr}</div>
-                            <div class="next-game-opp">${nextVsAt} ${nextOpp}</div>
-                            <div class="next-game-pitchers">${nextAwayP} vs ${nextHomeP}</div>
-                        </div>`;
-
-                    // Populate 7-Day Schedule on Sports Tab
-                    upcomingGames.forEach(game => {
-                        const isHome = game.teams.home.team.id === teamId;
-                        const oppAbbr = isHome ? game.teams.away.team.abbreviation : game.teams.home.team.abbreviation;
-                        const vsAt = isHome ? 'vs' : '@';
-                        const gameDate = new Date(game.gameDate);
-                        
-                        const timeString = gameDate.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'});
-                        const dateString = gameDate.toLocaleDateString([], {weekday: 'short', month: 'short', day: 'numeric'});
-
-                        const awayP = game.teams.away.probablePitcher ? getLastName(game.teams.away.probablePitcher.fullName) : 'TBD';
-                        const homeP = game.teams.home.probablePitcher ? getLastName(game.teams.home.probablePitcher.fullName) : 'TBD';
-
-                        scheduleHtml += `<tr>
-                            <td style="white-space:nowrap;">${dateString}</td>
-                            <td>${vsAt} ${oppAbbr}</td>
-                            <td style="white-space:nowrap;">${timeString}</td>
-                            <td><span style="color: #ccc; font-size: 0.85rem;">${awayP} @ ${homeP}</span></td>
-                        </tr>`;
-                    });
-                }
-                scheduleHtml += `</table>`;
-                document.getElementById('upcoming-schedule-container').innerHTML = scheduleHtml;
-
-                // B. Process Last Game & Box Score
+                // A. Process Last Game & Box Score
                 if (lastGame) {
                     const isHome = lastGame.teams.home.team.id === teamId;
                     const oppAbbrev = isHome ? lastGame.teams.away.team.abbreviation : lastGame.teams.home.team.abbreviation;
@@ -688,7 +690,9 @@
                     const homeAbbr = isHome ? 'MIL' : oppAbbrev;
                     const awayAbbr = isHome ? oppAbbrev : 'MIL';
                     
-                    document.getElementById('last-game-header').innerHTML = `Last Game: ${awayAbbr} ${awayScore} - ${homeAbbr} ${homeScore} <span style="font-size: 0.8em; font-weight: normal; color: #ccc;">(Final)</span>`;
+                    const headerHtml = `Last Game: ${awayAbbr} ${awayScore} - ${homeAbbr} ${homeScore} <span style="font-size: 0.8em; font-weight: normal; color: #ccc;">(Final)</span>`;
+                    document.getElementById('last-game-header').innerHTML = headerHtml;
+                    document.getElementById('last-game-header-tab2').innerHTML = headerHtml;
 
                     const boxUrl = `https://statsapi.mlb.com/api/v1/game/${lastGame.gamePk}/boxscore`;
                     const boxRes = await fetch(boxUrl);
@@ -718,7 +722,42 @@
                         }
                     });
                     document.getElementById('brewers-pitching-table').innerHTML = pitchingHtml;
+
+                    // Clone Box Score to Tab 2
+                    document.getElementById('box-score-clone').innerHTML = document.querySelector('.box-score-container').innerHTML;
                 }
+
+                // B. Process Upcoming Schedule
+                let scheduleHtml = `<table class="stats-table schedule-table">
+                    <tr><th>Date</th><th>Opponent</th><th>Time</th><th>Probable Pitchers</th></tr>`;
+                
+                if (upcomingGames.length === 0) {
+                    scheduleHtml += `<tr><td colspan="4" style="text-align:center; padding: 15px;">No games scheduled in the next 7 days.</td></tr>`;
+                } else {
+                    upcomingGames.forEach(game => {
+                        const isHome = game.teams.home.team.id === teamId;
+                        const oppAbbr = isHome ? game.teams.away.team.abbreviation : game.teams.home.team.abbreviation;
+                        const vsAt = isHome ? 'vs' : '@';
+                        const gameDate = new Date(game.gameDate);
+                        
+                        const timeString = gameDate.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'});
+                        const dateString = gameDate.toLocaleDateString([], {weekday: 'short', month: 'short', day: 'numeric'});
+
+                        const getLastName = (fullName) => fullName ? fullName.split(' ').pop() : 'TBD';
+                        const awayP = game.teams.away.probablePitcher ? getLastName(game.teams.away.probablePitcher.fullName) : 'TBD';
+                        const homeP = game.teams.home.probablePitcher ? getLastName(game.teams.home.probablePitcher.fullName) : 'TBD';
+
+                        scheduleHtml += `<tr>
+                            <td style="white-space:nowrap;">${dateString}</td>
+                            <td>${vsAt} ${oppAbbr}</td>
+                            <td style="white-space:nowrap;">${timeString}</td>
+                            <td><span style="color: #ccc; font-size: 0.85rem;">${awayP} @ ${homeP}</span></td>
+                        </tr>`;
+                    });
+                }
+                scheduleHtml += `</table>`;
+                document.getElementById('upcoming-schedule-container').innerHTML = scheduleHtml;
+                document.getElementById('schedule-clone').innerHTML = scheduleHtml; // Clone to Tab 2
 
                 // C. Process Standings
                 const currentYear = today.getFullYear();
@@ -734,7 +773,10 @@
                         const rowClass = isBrewers ? 'class="highlight"' : '';
                         stdHtml += `<tr ${rowClass}><td>${team.team.name}</td><td>${team.wins}</td><td>${team.losses}</td><td>${team.gamesBack}</td></tr>`;
                     });
+                    
+                    const finalHtml = `<table class="stats-table">${stdHtml}</table>`;
                     document.getElementById('nl-central-table').innerHTML = stdHtml;
+                    document.getElementById('standings-clone').innerHTML = finalHtml; // Clone to Tab 2
                 }
             } catch (error) { console.error("MLB fetch error:", error); }
         }
