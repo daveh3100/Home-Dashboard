@@ -274,7 +274,7 @@
         // ==========================================
         // CONFIGURATION
         // ==========================================
-        const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_DBN0Vdn8apuwf7cZ-134WmlMCjMPmnis0TGW7YOiIF5n-44OGn6QOrdOwafATopv/exec'; // Paste your script URL here
+        const GOOGLE_APP_SCRIPT_URL = '[https://script.google.com/macros/s/AKfycbw_DBN0Vdn8apuwf7cZ-134WmlMCjMPmnis0TGW7YOiIF5n-44OGn6QOrdOwafATopv/exec](https://script.google.com/macros/s/AKfycbwYsHgTPdd26ONrxTo4WUqy1ndz3kzWtQ2y98Sfr-x9ooGkLC2fh8umCnPJUy4xzEQN/exec)'; // Paste your script URL here
 
         // --- 1. Live Clock Functionality ---
         function updateClock() {
