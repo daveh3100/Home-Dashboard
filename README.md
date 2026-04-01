@@ -1,4 +1,4 @@
-[index.html](https://github.com/user-attachments/files/26333736/index.html)
+[index.html](https://github.com/user-attachments/files/26417411/index.html)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +13,9 @@
             --text-muted: #a0aab2;
             --accent-blue: #0a2351; 
             --accent-yellow: #ffc52f; 
-            --accent-kristi: #ff7675; /* Soft Coral for Kristi's events */
+            --accent-kristi: #ff7675; 
+            --accent-jake: #00b894;   
+            --accent-ryan: #a29bfe;   
             --border-radius: 16px;
             --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
@@ -71,28 +73,65 @@
             flex-shrink: 0; 
         }
 
-        /* Calendar Styles */
-        #calendar-container {
-            flex-grow: 1;
-            overflow-y: auto; 
-            padding-right: 5px;
+        .col-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+            overflow: hidden;
         }
+
+        /* Calendar Search & Filter Styles */
+        #calendar-search {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: rgba(0,0,0,0.2);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            box-sizing: border-box;
+            outline: none;
+            flex-shrink: 0;
+        }
+        #calendar-search:focus {
+            border-color: var(--accent-yellow);
+        }
+
+        #calendar-container { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
         .agenda-day { margin-bottom: 20px; }
         .agenda-day h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: var(--text-muted); text-transform: uppercase; }
         
         .event { 
-            display: flex; 
-            margin-bottom: 15px; 
-            background: rgba(255,255,255,0.03); 
-            padding: 12px; 
-            border-radius: 8px; 
-            border-left: 4px solid var(--accent-yellow); /* Default Dave Color */
+            display: flex; margin-bottom: 15px; background: rgba(255,255,255,0.03); 
+            padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-yellow); 
         }
         .event.kristi { border-left-color: var(--accent-kristi); }
+        .event.jake { border-left-color: var(--accent-jake); }
+        .event.ryan { border-left-color: var(--accent-ryan); }
         
         .event-time { min-width: 80px; font-weight: bold; color: var(--text-muted); }
         .event-title { flex-grow: 1; display: flex; align-items: center; gap: 6px; }
-        .owner-badge { font-size: 0.8rem; font-weight: bold; color: var(--accent-kristi); }
+        
+        .owner-badge { font-size: 0.8rem; font-weight: bold; }
+        .badge-kristi { color: var(--accent-kristi); }
+        .badge-jake { color: var(--accent-jake); }
+        .badge-ryan { color: var(--accent-ryan); }
+
+        /* BDT Container Styles */
+        #bdt-container {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #333;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            max-height: 120px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        .bdt-item { margin-bottom: 5px; }
+        .bdt-item strong { color: #ccc; }
 
         /* Weather Styles */
         .weather-current { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-shrink: 0;}
@@ -126,6 +165,17 @@
         .detail-header { font-weight: bold; margin-bottom: 10px; color: var(--accent-yellow); font-size: 1.1rem;}
         .detail-text { color: var(--text-muted); line-height: 1.4; font-size: 0.95rem;}
         .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; font-size: 0.9rem; }
+
+        /* Grocery List Styles */
+        .grocery-list {
+            margin: 0; padding: 0; list-style: none; overflow-y: auto; flex-grow: 1; padding-right: 5px;
+        }
+        .grocery-item {
+            padding: 12px 0; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px;
+        }
+        .grocery-item::before {
+            content: '⬜'; font-size: 1.1rem; color: var(--text-muted);
+        }
 
         /* Sports Styles */
         .sports-section { margin-bottom: 20px; flex-shrink: 0;}
@@ -166,44 +216,51 @@
         </div>
 
         <div class="panel">
-            <h2>📅 Google Calendar</h2>
+            <h2>📅 Family Calendar</h2>
+            <input type="text" id="calendar-search" placeholder="Search upcoming events..." autocomplete="off">
             <div id="calendar-container">
                 <p style="color: var(--text-muted);">Fetching events...</p>
             </div>
+            <div id="bdt-container">
+                </div>
         </div>
 
-        <div class="panel">
-            <h2>☁️ Weather Forecast</h2>
-            
-            <div class="weather-current">
-                <div class="weather-main">
-                    <div class="weather-temp" id="current-temp">--°</div>
-                    <div class="weather-cond" id="current-cond">Loading...</div>
-                </div>
-                <div style="font-size: 4.5rem; line-height: 1;" id="current-icon">☁️</div>
-            </div>
-
-            <div class="weather-stats">
-                <div class="stat-item"><span class="stat-label">High / Low:</span> <span class="stat-value" id="current-high-low">--° / --°</span></div>
-                <div class="stat-item"><span class="stat-label">Wind:</span> <span class="stat-value" id="current-wind">-- mph</span></div>
-                <div class="stat-item"><span class="stat-label">Rain Chance:</span> <span class="stat-value" id="current-rain">--%</span></div>
-                <div class="stat-item"><span class="stat-label">Humidity:</span> <span class="stat-value" id="current-humidity">--%</span></div>
-            </div>
-            
-            <h3 style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">Forecast (Tap for Details)</h3>
-            
-            <div class="forecast-grid" id="forecast-buttons">
+        <div class="col-wrapper">
+            <div class="panel" style="flex: 1.2;">
+                <h2>☁️ Weather Forecast</h2>
+                <div class="weather-current">
+                    <div class="weather-main">
+                        <div class="weather-temp" id="current-temp">--°</div>
+                        <div class="weather-cond" id="current-cond">Loading...</div>
+                    </div>
+                    <div style="font-size: 4.5rem; line-height: 1;" id="current-icon">☁️</div>
                 </div>
 
-            <div class="weather-detail-pane" id="weather-detail-pane">
-                <div class="detail-header">Select a day</div>
-                <div class="detail-text">Tap a day above to view detailed forecast information.</div>
+                <div class="weather-stats">
+                    <div class="stat-item"><span class="stat-label">High/Low:</span> <span class="stat-value" id="current-high-low">--°/--°</span></div>
+                    <div class="stat-item"><span class="stat-label">Wind:</span> <span class="stat-value" id="current-wind">-- mph</span></div>
+                    <div class="stat-item"><span class="stat-label">Rain Chance:</span> <span class="stat-value" id="current-rain">--%</span></div>
+                    <div class="stat-item"><span class="stat-label">Humidity:</span> <span class="stat-value" id="current-humidity">--%</span></div>
+                </div>
+                
+                <h3 style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">Forecast (Tap for Details)</h3>
+                <div class="forecast-grid" id="forecast-buttons"></div>
+                <div class="weather-detail-pane" id="weather-detail-pane">
+                    <div class="detail-header">Select a day</div>
+                    <div class="detail-text">Tap a day above to view detailed forecast information.</div>
+                </div>
+            </div>
+
+            <div class="panel" style="flex: 0.8;">
+                <h2>🛒 Groceries</h2>
+                <ul class="grocery-list" id="grocery-list-container">
+                    <li class="grocery-item" style="color: var(--text-muted); border: none;">Fetching list...</li>
+                </ul>
             </div>
         </div>
 
         <div class="panel">
             <h2>⚾ Milwaukee Brewers</h2>
-            
             <div class="sports-section">
                 <h3 id="last-game-header">Loading Last Game...</h3>
                 <div class="box-score-container">
@@ -244,7 +301,9 @@
         // ==========================================
         // CONFIGURATION
         // ==========================================
-        const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqXD8D0YMjstXardloFWF-HVvs55WLYzjMXjuk4unClM01oxGkM6vjrcbX5M6fpK8N/exec'; // Paste your script URL here
+        const GOOGLE_APP_SCRIPT_URL = '
+https://script.google.com/macros/s/AKfycbxaeukSONHtGu0vKoDQsEYRcHLV3dmdeFrXfeL6mmuCMmuEM-LtFs56_WBgHnJnmX4X/exec
+'; // Paste your script URL here
 
         // --- 1. Live Clock Functionality ---
         function updateClock() {
@@ -261,79 +320,138 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // --- 2. Live Calendar (Via Google Apps Script) ---
-        async function fetchCalendar() {
-            const container = document.getElementById('calendar-container');
+        // --- 2. Live Calendar & Groceries (Via Google Apps Script) ---
+        let globalCalendarEvents = []; // Store events globally so we can search them without refetching
+
+        async function fetchGoogleData() {
+            const calContainer = document.getElementById('calendar-container');
+            const grocContainer = document.getElementById('grocery-list-container');
             
             if (GOOGLE_APP_SCRIPT_URL === 'YOUR_WEB_APP_URL_HERE') {
-                container.innerHTML = `<p style="color: var(--accent-yellow); background: rgba(255, 197, 47, 0.1); padding: 15px; border-radius: 8px;">
-                                       ⚠️ <b>Setup Required</b><br>Paste your Google Apps Script URL into the HTML configuration to load events.</p>`;
+                calContainer.innerHTML = `<p style="color: var(--accent-yellow); background: rgba(255, 197, 47, 0.1); padding: 15px; border-radius: 8px;">
+                                       ⚠️ <b>Setup Required</b><br>Paste your Google Apps Script URL.</p>`;
                 return;
             }
 
             try {
                 const urlWithCacheBuster = GOOGLE_APP_SCRIPT_URL + "?t=" + new Date().getTime();
                 const res = await fetch(urlWithCacheBuster);
-                const events = await res.json();
+                const data = await res.json();
                 
-                if (events.length === 0) {
-                    container.innerHTML = `<p style="color: var(--text-muted); font-style: italic;">No upcoming events in the next 7 days.</p>`;
-                    return;
+                // Store events globally and trigger render functions
+                globalCalendarEvents = data.events;
+                renderCalendar();
+                renderBDTList();
+
+                // Render Groceries
+                const groceries = data.groceries;
+                if (!groceries || groceries.length === 0) {
+                    grocContainer.innerHTML = `<li class="grocery-item" style="color: var(--text-muted); border: none;">List is empty.</li>`;
+                } else {
+                    grocContainer.innerHTML = groceries.map(item => `<li class="grocery-item">${item}</li>`).join('');
                 }
 
-                const groupedEvents = {};
-                events.forEach(evt => {
-                    const eventDate = new Date(evt.time);
-                    const dateStr = eventDate.toDateString();
-                    if (!groupedEvents[dateStr]) groupedEvents[dateStr] = [];
-                    groupedEvents[dateStr].push(evt);
-                });
-
-                const formatTime = (dateString, isAllDay) => {
-                    if (isAllDay) return "All Day";
-                    const d = new Date(dateString);
-                    return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-                };
-
-                const getDayLabel = (dateString) => {
-                    const d = new Date(dateString);
-                    const today = new Date();
-                    const tomorrow = new Date(); tomorrow.setDate(today.getDate() + 1);
-                    
-                    if (d.toDateString() === today.toDateString()) return "Today";
-                    if (d.toDateString() === tomorrow.toDateString()) return "Tomorrow";
-                    return d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
-                };
-
-                let htmlString = "";
-                const sortedDates = Object.keys(groupedEvents).sort((a, b) => new Date(a) - new Date(b));
-                
-                sortedDates.forEach(dateStr => {
-                    htmlString += `<div class="agenda-day"><h3>${getDayLabel(dateStr)}</h3>`;
-                    
-                    groupedEvents[dateStr].forEach(evt => {
-                        // Apply custom class and badge if the owner is Kristi
-                        const isKristi = evt.owner === 'Kristi';
-                        const eventClass = isKristi ? 'event kristi' : 'event';
-                        const badge = isKristi ? `<span class="owner-badge">(K)</span>` : '';
-                        
-                        htmlString += `
-                            <div class="${eventClass}">
-                                <div class="event-time">${formatTime(evt.time, evt.isAllDay)}</div>
-                                <div class="event-title">${badge}${evt.title}</div>
-                            </div>`;
-                    });
-                    htmlString += `</div>`;
-                });
-
-                container.innerHTML = htmlString;
             } catch (error) {
-                console.error("Calendar fetch error:", error);
-                container.innerHTML = `<p style="color: #ff6b6b;">Error loading calendar data. Check your Web App URL.</p>`;
+                console.error("Google Data fetch error:", error);
             }
         }
-        fetchCalendar();
-        setInterval(fetchCalendar, 900000); // 15 mins
+
+        function renderCalendar() {
+            const container = document.getElementById('calendar-container');
+            const searchQuery = document.getElementById('calendar-search').value.toLowerCase();
+            
+            let filteredEvents = globalCalendarEvents;
+            if (searchQuery) {
+                filteredEvents = globalCalendarEvents.filter(evt => 
+                    evt.title.toLowerCase().includes(searchQuery) || 
+                    (evt.description && evt.description.toLowerCase().includes(searchQuery))
+                );
+            }
+
+            if (filteredEvents.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); font-style: italic;">No matching events found.</p>`;
+                return;
+            }
+
+            const groupedEvents = {};
+            filteredEvents.forEach(evt => {
+                const eventDate = new Date(evt.time);
+                const dateStr = eventDate.toDateString();
+                if (!groupedEvents[dateStr]) groupedEvents[dateStr] = [];
+                groupedEvents[dateStr].push(evt);
+            });
+
+            const formatTime = (dateString, isAllDay) => {
+                if (isAllDay) return "All Day";
+                const d = new Date(dateString);
+                return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            };
+
+            const getDayLabel = (dateString) => {
+                const d = new Date(dateString);
+                const today = new Date();
+                const tomorrow = new Date(); tomorrow.setDate(today.getDate() + 1);
+                
+                if (d.toDateString() === today.toDateString()) return "Today";
+                if (d.toDateString() === tomorrow.toDateString()) return "Tomorrow";
+                return d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+            };
+
+            let htmlString = "";
+            const sortedDates = Object.keys(groupedEvents).sort((a, b) => new Date(a) - new Date(b));
+            
+            sortedDates.forEach(dateStr => {
+                htmlString += `<div class="agenda-day"><h3>${getDayLabel(dateStr)}</h3>`;
+                
+                groupedEvents[dateStr].forEach(evt => {
+                    let eventClass = 'event';
+                    let badge = '';
+                    
+                    if (evt.owner !== 'Dave') {
+                        const ownerLower = evt.owner.toLowerCase();
+                        const initial = evt.owner.charAt(0).toUpperCase();
+                        eventClass = `event ${ownerLower}`;
+                        badge = `<span class="owner-badge badge-${ownerLower}">(${initial})</span>`;
+                    }
+                    
+                    htmlString += `
+                        <div class="${eventClass}">
+                            <div class="event-time">${formatTime(evt.time, evt.isAllDay)}</div>
+                            <div class="event-title">${badge}${evt.title}</div>
+                        </div>`;
+                });
+                htmlString += `</div>`;
+            });
+
+            container.innerHTML = htmlString;
+        }
+
+        function renderBDTList() {
+            const bdtContainer = document.getElementById('bdt-container');
+            
+            // Filter global events where description contains "BDT"
+            const bdtEvents = globalCalendarEvents.filter(evt => evt.description && evt.description.includes('BDT'));
+            
+            if (bdtEvents.length === 0) {
+                bdtContainer.innerHTML = `<div style="font-style: italic;">No BDT notes found in upcoming events.</div>`;
+                return;
+            }
+            
+            let html = `<div style="margin-bottom: 8px; font-weight: bold; color: var(--accent-yellow); text-transform: uppercase;">Upcoming BDT Notes:</div>`;
+            bdtEvents.forEach(evt => {
+                const eventDate = new Date(evt.time);
+                const dateStr = eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                html += `<div class="bdt-item"><strong>${evt.title}</strong> - ${dateStr}</div>`;
+            });
+            
+            bdtContainer.innerHTML = html;
+        }
+
+        // Add event listener to search bar to filter in real-time
+        document.getElementById('calendar-search').addEventListener('input', renderCalendar);
+
+        fetchGoogleData();
+        setInterval(fetchGoogleData, 900000); // 15 mins
 
         // --- 3. Live Weather (Open-Meteo API) ---
         const getWeatherInfo = (code) => {
@@ -510,7 +628,6 @@
                 }
                 scheduleHtml += `</table>`;
                 document.getElementById('upcoming-schedule-container').innerHTML = scheduleHtml;
-
 
                 // C. Process Standings
                 const currentYear = today.getFullYear();
