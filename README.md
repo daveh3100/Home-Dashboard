@@ -1,4 +1,4 @@
-[index.html](https://github.com/user-attachments/files/26417444/index.html)
+[index.html](https://github.com/user-attachments/files/26417894/index.html)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,14 +73,6 @@
             flex-shrink: 0; 
         }
 
-        .col-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            height: 100%;
-            overflow: hidden;
-        }
-
         /* Calendar Search & Filter Styles */
         #calendar-search {
             width: 100%;
@@ -124,14 +116,15 @@
             margin-top: 15px;
             padding-top: 10px;
             border-top: 1px solid #333;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            max-height: 120px;
+            max-height: 150px;
             overflow-y: auto;
             flex-shrink: 0;
         }
-        .bdt-item { margin-bottom: 5px; }
-        .bdt-item strong { color: #ccc; }
+        .bdt-item { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #333;}
+        .bdt-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
+        .bdt-item strong { color: #ccc; display: block; margin-bottom: 2px;}
 
         /* Weather Styles */
         .weather-current { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-shrink: 0;}
@@ -165,17 +158,6 @@
         .detail-header { font-weight: bold; margin-bottom: 10px; color: var(--accent-yellow); font-size: 1.1rem;}
         .detail-text { color: var(--text-muted); line-height: 1.4; font-size: 0.95rem;}
         .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; font-size: 0.9rem; }
-
-        /* Grocery List Styles */
-        .grocery-list {
-            margin: 0; padding: 0; list-style: none; overflow-y: auto; flex-grow: 1; padding-right: 5px;
-        }
-        .grocery-item {
-            padding: 12px 0; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px;
-        }
-        .grocery-item::before {
-            content: '⬜'; font-size: 1.1rem; color: var(--text-muted);
-        }
 
         /* Sports Styles */
         .sports-section { margin-bottom: 20px; flex-shrink: 0;}
@@ -225,37 +207,28 @@
                 </div>
         </div>
 
-        <div class="col-wrapper">
-            <div class="panel" style="flex: 1.2;">
-                <h2>☁️ Weather Forecast</h2>
-                <div class="weather-current">
-                    <div class="weather-main">
-                        <div class="weather-temp" id="current-temp">--°</div>
-                        <div class="weather-cond" id="current-cond">Loading...</div>
-                    </div>
-                    <div style="font-size: 4.5rem; line-height: 1;" id="current-icon">☁️</div>
+        <div class="panel">
+            <h2>☁️ Weather Forecast</h2>
+            <div class="weather-current">
+                <div class="weather-main">
+                    <div class="weather-temp" id="current-temp">--°</div>
+                    <div class="weather-cond" id="current-cond">Loading...</div>
                 </div>
-
-                <div class="weather-stats">
-                    <div class="stat-item"><span class="stat-label">High/Low:</span> <span class="stat-value" id="current-high-low">--°/--°</span></div>
-                    <div class="stat-item"><span class="stat-label">Wind:</span> <span class="stat-value" id="current-wind">-- mph</span></div>
-                    <div class="stat-item"><span class="stat-label">Rain Chance:</span> <span class="stat-value" id="current-rain">--%</span></div>
-                    <div class="stat-item"><span class="stat-label">Humidity:</span> <span class="stat-value" id="current-humidity">--%</span></div>
-                </div>
-                
-                <h3 style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">Forecast (Tap for Details)</h3>
-                <div class="forecast-grid" id="forecast-buttons"></div>
-                <div class="weather-detail-pane" id="weather-detail-pane">
-                    <div class="detail-header">Select a day</div>
-                    <div class="detail-text">Tap a day above to view detailed forecast information.</div>
-                </div>
+                <div style="font-size: 4.5rem; line-height: 1;" id="current-icon">☁️</div>
             </div>
 
-            <div class="panel" style="flex: 0.8;">
-                <h2>🛒 Groceries</h2>
-                <ul class="grocery-list" id="grocery-list-container">
-                    <li class="grocery-item" style="color: var(--text-muted); border: none;">Fetching list...</li>
-                </ul>
+            <div class="weather-stats">
+                <div class="stat-item"><span class="stat-label">High/Low:</span> <span class="stat-value" id="current-high-low">--°/--°</span></div>
+                <div class="stat-item"><span class="stat-label">Wind:</span> <span class="stat-value" id="current-wind">-- mph</span></div>
+                <div class="stat-item"><span class="stat-label">Rain Chance:</span> <span class="stat-value" id="current-rain">--%</span></div>
+                <div class="stat-item"><span class="stat-label">Humidity:</span> <span class="stat-value" id="current-humidity">--%</span></div>
+            </div>
+            
+            <h3 style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">Forecast (Tap for Details)</h3>
+            <div class="forecast-grid" id="forecast-buttons"></div>
+            <div class="weather-detail-pane" id="weather-detail-pane">
+                <div class="detail-header">Select a day</div>
+                <div class="detail-text">Tap a day above to view detailed forecast information.</div>
             </div>
         </div>
 
@@ -301,9 +274,7 @@
         // ==========================================
         // CONFIGURATION
         // ==========================================
-        const GOOGLE_APP_SCRIPT_URL = '
-https://script.google.com/macros/s/AKfycbxaeukSONHtGu0vKoDQsEYRcHLV3dmdeFrXfeL6mmuCMmuEM-LtFs56_WBgHnJnmX4X/exec
-'; // Paste your script URL here
+        const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_DBN0Vdn8apuwf7cZ-134WmlMCjMPmnis0TGW7YOiIF5n-44OGn6QOrdOwafATopv/exec'; // Paste your script URL here
 
         // --- 1. Live Clock Functionality ---
         function updateClock() {
@@ -320,12 +291,12 @@ https://script.google.com/macros/s/AKfycbxaeukSONHtGu0vKoDQsEYRcHLV3dmdeFrXfeL6m
         setInterval(updateClock, 1000);
         updateClock();
 
-        // --- 2. Live Calendar & Groceries (Via Google Apps Script) ---
-        let globalCalendarEvents = []; // Store events globally so we can search them without refetching
+        // --- 2. Live Calendar (Via Google Apps Script) ---
+        let globalCalendarEvents = []; 
 
         async function fetchGoogleData() {
             const calContainer = document.getElementById('calendar-container');
-            const grocContainer = document.getElementById('grocery-list-container');
+            const bdtContainer = document.getElementById('bdt-container');
             
             if (GOOGLE_APP_SCRIPT_URL === 'YOUR_WEB_APP_URL_HERE') {
                 calContainer.innerHTML = `<p style="color: var(--accent-yellow); background: rgba(255, 197, 47, 0.1); padding: 15px; border-radius: 8px;">
@@ -336,23 +307,20 @@ https://script.google.com/macros/s/AKfycbxaeukSONHtGu0vKoDQsEYRcHLV3dmdeFrXfeL6m
             try {
                 const urlWithCacheBuster = GOOGLE_APP_SCRIPT_URL + "?t=" + new Date().getTime();
                 const res = await fetch(urlWithCacheBuster);
+                
+                if (!res.ok) throw new Error("Network response was not ok");
+                
                 const data = await res.json();
                 
-                // Store events globally and trigger render functions
-                globalCalendarEvents = data.events;
+                globalCalendarEvents = data.events || [];
                 renderCalendar();
                 renderBDTList();
 
-                // Render Groceries
-                const groceries = data.groceries;
-                if (!groceries || groceries.length === 0) {
-                    grocContainer.innerHTML = `<li class="grocery-item" style="color: var(--text-muted); border: none;">List is empty.</li>`;
-                } else {
-                    grocContainer.innerHTML = groceries.map(item => `<li class="grocery-item">${item}</li>`).join('');
-                }
-
             } catch (error) {
                 console.error("Google Data fetch error:", error);
+                calContainer.innerHTML = `<p style="color: #ff6b6b; background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 8px;">
+                                          <b>Connection Blocked</b><br>Make sure you clicked "Run" in the Apps Script editor to authorize, then deployed a New Version.</p>`;
+                bdtContainer.innerHTML = '';
             }
         }
 
@@ -360,8 +328,18 @@ https://script.google.com/macros/s/AKfycbxaeukSONHtGu0vKoDQsEYRcHLV3dmdeFrXfeL6m
             const container = document.getElementById('calendar-container');
             const searchQuery = document.getElementById('calendar-search').value.toLowerCase();
             
-            let filteredEvents = globalCalendarEvents;
+            // For the main calendar view, we only want to show the next 7 days, 
+            // even though we fetched 180 days in the background for the BDT search
+            const now = new Date();
+            const sevenDaysFromNow = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000));
+            
+            let filteredEvents = globalCalendarEvents.filter(evt => {
+                const eventDate = new Date(evt.time);
+                return eventDate <= sevenDaysFromNow;
+            });
+
             if (searchQuery) {
+                // If they are searching, let them search the entire 180 day cache
                 filteredEvents = globalCalendarEvents.filter(evt => 
                     evt.title.toLowerCase().includes(searchQuery) || 
                     (evt.description && evt.description.toLowerCase().includes(searchQuery))
@@ -428,26 +406,27 @@ https://script.google.com/macros/s/AKfycbxaeukSONHtGu0vKoDQsEYRcHLV3dmdeFrXfeL6m
 
         function renderBDTList() {
             const bdtContainer = document.getElementById('bdt-container');
-            
-            // Filter global events where description contains "BDT"
-            const bdtEvents = globalCalendarEvents.filter(evt => evt.description && evt.description.includes('BDT'));
+            // Check both description and title for BDT
+            const bdtEvents = globalCalendarEvents.filter(evt => 
+                (evt.description && evt.description.includes('BDT')) || 
+                (evt.title && evt.title.includes('BDT'))
+            );
             
             if (bdtEvents.length === 0) {
                 bdtContainer.innerHTML = `<div style="font-style: italic;">No BDT notes found in upcoming events.</div>`;
                 return;
             }
             
-            let html = `<div style="margin-bottom: 8px; font-weight: bold; color: var(--accent-yellow); text-transform: uppercase;">Upcoming BDT Notes:</div>`;
+            let html = `<div style="margin-bottom: 8px; font-weight: bold; color: var(--accent-yellow); text-transform: uppercase;">Upcoming BDT Events:</div>`;
             bdtEvents.forEach(evt => {
                 const eventDate = new Date(evt.time);
-                const dateStr = eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                html += `<div class="bdt-item"><strong>${evt.title}</strong> - ${dateStr}</div>`;
+                const dateStr = eventDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                html += `<div class="bdt-item"><strong>${evt.title}</strong><span style="color: var(--text-muted);">${dateStr}</span></div>`;
             });
             
             bdtContainer.innerHTML = html;
         }
 
-        // Add event listener to search bar to filter in real-time
         document.getElementById('calendar-search').addEventListener('input', renderCalendar);
 
         fetchGoogleData();
