@@ -15,7 +15,7 @@
             --accent-kristi: #ff7675; 
             --accent-jake: #00b894;   
             --accent-ryan: #a29bfe;   
-            --border-radius: 16px;
+            --border-radius: 12px;
             --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
@@ -24,7 +24,7 @@
             color: var(--text-main);
             font-family: var(--font-family);
             margin: 0;
-            padding: 20px;
+            padding: 15px; /* Tighter padding for iPad */
             height: 100vh;
             box-sizing: border-box;
             overflow: hidden; 
@@ -42,22 +42,22 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            padding: 0 10px 15px 10px;
+            padding: 0 5px 10px 5px;
             border-bottom: 2px solid var(--panel-bg);
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* Tighter margin */
             flex-shrink: 0;
         }
 
         .date-location { display: flex; flex-direction: column; }
-        .date { font-size: 1.5rem; color: var(--text-muted); }
-        .time { font-size: 4rem; font-weight: bold; line-height: 1; color: var(--accent-yellow); }
+        .date { font-size: 1.4rem; color: var(--text-muted); }
+        .time { font-size: 3.5rem; font-weight: bold; line-height: 1; color: var(--accent-yellow); }
 
         .tab-nav {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             background: rgba(0,0,0,0.2);
-            padding: 8px;
-            border-radius: 12px;
+            padding: 6px;
+            border-radius: 10px;
             margin-bottom: 5px;
         }
 
@@ -65,9 +65,9 @@
             background: transparent;
             border: 1px solid transparent;
             color: var(--text-muted);
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -84,7 +84,7 @@
         .tab-content {
             display: none; 
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
+            gap: 15px; /* Tighter gap for iPad */
             height: 100%;
             overflow: hidden;
         }
@@ -93,7 +93,7 @@
         .panel {
             background-color: var(--panel-bg);
             border-radius: var(--border-radius);
-            padding: 25px;
+            padding: 15px 18px; /* Tighter padding for iPad */
             box-shadow: 0 8px 16px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
@@ -101,35 +101,35 @@
         }
 
         h2 {
-            margin-top: 0; font-size: 1.5rem; border-bottom: 1px solid #333;
-            padding-bottom: 10px; color: var(--accent-yellow);
-            display: flex; align-items: center; gap: 10px;
+            margin-top: 0; font-size: 1.3rem; border-bottom: 1px solid #333;
+            padding-bottom: 8px; margin-bottom: 12px; color: var(--accent-yellow);
+            display: flex; align-items: center; gap: 8px;
             flex-shrink: 0; 
         }
 
         /* --- Standard List Calendar --- */
         #calendar-search {
-            width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px;
+            width: 100%; padding: 8px; margin-bottom: 12px; border-radius: 6px;
             border: 1px solid #333; background: rgba(0,0,0,0.2); color: var(--text-main);
             font-family: var(--font-family); box-sizing: border-box; outline: none; flex-shrink: 0;
         }
         #calendar-search:focus { border-color: var(--accent-yellow); }
 
         .calendar-scroll-area { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
-        .agenda-day { margin-bottom: 20px; }
-        .agenda-day h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: var(--text-muted); text-transform: uppercase; }
+        .agenda-day { margin-bottom: 15px; }
+        .agenda-day h3 { margin: 0 0 8px 0; font-size: 1.1rem; color: var(--text-muted); text-transform: uppercase; }
         
         .event { 
-            display: flex; margin-bottom: 15px; background: rgba(255,255,255,0.03); 
-            padding: 12px; border-radius: 8px; border-left: 4px solid var(--accent-yellow); 
+            display: flex; margin-bottom: 10px; background: rgba(255,255,255,0.03); 
+            padding: 10px; border-radius: 8px; border-left: 4px solid var(--accent-yellow); 
         }
         .event.kristi { border-left-color: var(--accent-kristi); }
         .event.jake { border-left-color: var(--accent-jake); }
         .event.ryan { border-left-color: var(--accent-ryan); }
         
-        .event-time { min-width: 80px; font-weight: bold; color: var(--text-muted); }
-        .event-title { flex-grow: 1; display: flex; align-items: center; gap: 6px; }
-        .owner-badge { font-size: 0.8rem; font-weight: bold; }
+        .event-time { min-width: 75px; font-weight: bold; color: var(--text-muted); font-size: 0.95rem; }
+        .event-title { flex-grow: 1; display: flex; align-items: center; gap: 6px; font-size: 0.95rem; }
+        .owner-badge { font-size: 0.75rem; font-weight: bold; }
         .badge-kristi { color: var(--accent-kristi); }
         .badge-jake { color: var(--accent-jake); }
         .badge-ryan { color: var(--accent-ryan); }
@@ -141,11 +141,11 @@
         }
         .calendar-grid-body {
             display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
-            grid-auto-rows: minmax(80px, 1fr); flex-grow: 1; overflow-y: auto; padding-right: 8px;
+            grid-auto-rows: minmax(70px, 1fr); flex-grow: 1; overflow-y: auto; padding-right: 8px;
         }
         .calendar-cell {
             background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 6px;
-            padding: 8px; display: flex; flex-direction: column; overflow: hidden;
+            padding: 6px; display: flex; flex-direction: column; overflow: hidden;
             cursor: pointer; transition: background 0.2s ease;
         }
         .calendar-cell:hover { background: rgba(255,255,255,0.08); }
@@ -153,7 +153,7 @@
         .calendar-cell.empty { background: transparent; border: none; cursor: default; }
         .calendar-cell.empty:hover { background: transparent; }
         
-        .cell-date { font-size: 1rem; color: var(--text-muted); margin-bottom: 8px; text-align: right; font-weight: bold;}
+        .cell-date { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 6px; text-align: right; font-weight: bold;}
         .calendar-cell.today .cell-date { color: var(--accent-yellow); }
         
         /* Event Badges (Names + Dots) */
@@ -161,14 +161,14 @@
         .event-badges-container::-webkit-scrollbar { display: none; }
         .badge-wrapper { display: flex; align-items: center; gap: 6px; }
         .event-badge {
-            width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 0.75rem; font-weight: bold; color: #fff; flex-shrink: 0;
+            width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: bold; color: #fff; flex-shrink: 0;
             background: rgba(255, 197, 47, 0.4); border: 1px solid var(--accent-yellow);
         }
         .event-badge.kristi { background: rgba(255, 118, 117, 0.4); border-color: var(--accent-kristi); }
         .event-badge.jake { background: rgba(0, 184, 148, 0.4); border-color: var(--accent-jake); }
         .event-badge.ryan { background: rgba(162, 155, 254, 0.4); border-color: var(--accent-ryan); }
-        .badge-name { font-size: 0.75rem; font-weight: bold; color: var(--text-main); }
+        .badge-name { font-size: 0.7rem; font-weight: bold; color: var(--text-main); }
 
         /* --- Popup Modal Styles --- */
         .modal-overlay {
@@ -179,77 +179,77 @@
         .modal-overlay.active { display: flex; }
         .modal-content {
             background: var(--panel-bg); width: 90%; max-width: 500px; border-radius: var(--border-radius);
-            padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); max-height: 80vh; display: flex; flex-direction: column;
+            padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); max-height: 80vh; display: flex; flex-direction: column;
             border: 1px solid #444;
         }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
         .modal-header h2 { margin: 0; border: none; padding: 0; }
         .close-btn { 
             background: rgba(255,255,255,0.1); border: none; color: var(--text-main); font-size: 1.5rem; 
-            cursor: pointer; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+            cursor: pointer; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s;
         }
         .close-btn:hover { background: rgba(255, 107, 107, 0.8); }
         .modal-body { overflow-y: auto; flex-grow: 1; padding-right: 5px; }
 
         /* --- BDT Tracker --- */
         .bdt-container {
-            margin-top: 15px; padding-top: 10px; border-top: 1px solid #333;
+            margin-top: 10px; padding-top: 10px; border-top: 1px solid #333;
             font-size: 0.85rem; color: var(--text-muted); overflow-y: auto; flex-shrink: 0;
         }
-        .bdt-item { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #333;}
+        .bdt-item { margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px dashed #333;}
         .bdt-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0;}
         .bdt-item strong { color: #ccc; display: block; margin-bottom: 2px;}
 
         /* --- Weather Elements --- */
-        .weather-current { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-shrink: 0;}
+        .weather-current { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; flex-shrink: 0;}
         .weather-main { display: flex; flex-direction: column; }
-        .weather-temp { font-size: 3.5rem; font-weight: bold; line-height: 1;}
-        .weather-cond { font-size: 1.2rem; color: var(--accent-yellow); margin-top: 5px; font-weight: bold;}
+        .weather-temp { font-size: 3.2rem; font-weight: bold; line-height: 1;}
+        .weather-cond { font-size: 1.1rem; color: var(--accent-yellow); margin-top: 5px; font-weight: bold;}
         
         .weather-stats {
-            background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px;
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px; font-size: 1rem; flex-shrink: 0;
+            background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; font-size: 0.95rem; flex-shrink: 0;
         }
         .stat-item { display: flex; justify-content: space-between; }
         .stat-label { color: var(--text-muted); }
         .stat-value { font-weight: bold; }
 
-        .forecast-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align: center; margin-bottom: 15px; flex-shrink: 0;}
+        .forecast-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; margin-bottom: 10px; flex-shrink: 0;}
         .forecast-day {
-            background: rgba(255,255,255,0.05); padding: 15px 5px; border-radius: 8px; cursor: pointer;
+            background: rgba(255,255,255,0.05); padding: 10px 5px; border-radius: 8px; cursor: pointer;
             transition: all 0.2s ease; border: 1px solid transparent;
         }
         .forecast-day.active { border-color: var(--accent-yellow); background: rgba(255, 197, 47, 0.1); }
-        .forecast-day .day-name { font-weight: bold; margin-bottom: 5px; font-size: 1.1rem;}
-        .forecast-day .day-icon { font-size: 1.5rem; margin: 5px 0;}
-        .forecast-day .day-temps { color: var(--text-muted); font-size: 0.9rem; margin-top: 5px; }
+        .forecast-day .day-name { font-weight: bold; margin-bottom: 4px; font-size: 1rem;}
+        .forecast-day .day-icon { font-size: 1.3rem; margin: 4px 0;}
+        .forecast-day .day-temps { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
 
         .weather-detail-pane {
-            background: var(--bg-color); border-radius: 8px; padding: 15px; margin-top: auto; border-left: 4px solid var(--accent-blue);
+            background: var(--bg-color); border-radius: 8px; padding: 12px; margin-top: auto; border-left: 4px solid var(--accent-blue);
         }
-        .detail-header { font-weight: bold; margin-bottom: 10px; color: var(--accent-yellow); font-size: 1.1rem;}
-        .detail-text { color: var(--text-muted); line-height: 1.4; font-size: 0.95rem;}
-        .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; font-size: 0.9rem; }
+        .detail-header { font-weight: bold; margin-bottom: 6px; color: var(--accent-yellow); font-size: 1rem;}
+        .detail-text { color: var(--text-muted); line-height: 1.3; font-size: 0.9rem;}
+        .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; font-size: 0.85rem; }
 
         /* --- Sports Elements --- */
-        .sports-section { margin-bottom: 20px; flex-shrink: 0;}
-        .sports-section h3 { margin: 0 0 10px 0; font-size: 1.1rem; color: var(--text-muted); }
+        .sports-section { margin-bottom: 15px; flex-shrink: 0;}
+        .sports-section h3 { margin: 0 0 8px 0; font-size: 1rem; color: var(--text-muted); }
         
         .box-score-container, .schedule-container {
             overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 8px;
-            padding: 10px; margin-bottom: 15px; border: 1px solid #333;
+            padding: 8px; margin-bottom: 10px; border: 1px solid #333;
         }
-        .box-score-container { max-height: 250px; }
-        .schedule-container { max-height: 180px; }
+        .box-score-container { max-height: 220px; }
+        .schedule-container { max-height: 160px; }
         
         .box-score-header {
-            font-size: 0.9rem; color: var(--accent-yellow); border-bottom: 1px solid #444;
-            padding-bottom: 5px; margin-bottom: 8px; margin-top: 10px; font-weight: bold;
+            font-size: 0.85rem; color: var(--accent-yellow); border-bottom: 1px solid #444;
+            padding-bottom: 4px; margin-bottom: 6px; margin-top: 8px; font-weight: bold;
         }
         .box-score-header:first-child { margin-top: 0; }
         
-        .stats-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .stats-table th, .stats-table td { text-align: left; padding: 6px; border-bottom: 1px solid #333; }
+        .stats-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        .stats-table th, .stats-table td { text-align: left; padding: 5px; border-bottom: 1px solid #333; }
         .stats-table th { color: var(--text-muted); font-weight: normal; }
         .stats-table td:not(:first-child), .stats-table th:not(:first-child) { text-align: right; }
         .schedule-table th, .schedule-table td { text-align: left !important; }
@@ -262,7 +262,7 @@
     <div class="header">
         <div class="date-location">
             <div class="date" id="current-date">Loading date...</div>
-            <div style="color: var(--text-muted); margin-top: 5px; font-size: 0.9rem;">📍 Janesville, WI</div>
+            <div style="color: var(--text-muted); margin-top: 5px; font-size: 0.85rem;">📍 Janesville, WI</div>
         </div>
         
         <div class="tab-nav">
@@ -281,31 +281,47 @@
             <div id="calendar-container" class="calendar-scroll-area">
                 <p style="color: var(--text-muted);">Fetching events...</p>
             </div>
-            <div id="bdt-container-home" class="bdt-container" style="max-height: 150px;"></div>
+            <div id="bdt-container-home" class="bdt-container" style="max-height: 120px;"></div>
         </div>
 
-        <div class="panel">
-            <h2>☁️ Weather Forecast</h2>
-            <div class="weather-current">
-                <div class="weather-main">
-                    <div class="weather-temp" id="current-temp">--°</div>
-                    <div class="weather-cond" id="current-cond">Loading...</div>
+        <div style="display: flex; flex-direction: column; gap: 15px; overflow: hidden;">
+            
+            <div class="panel" style="padding: 12px 18px; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <div style="font-weight: bold; color: var(--accent-kristi); font-size: 1.05rem; margin-bottom: 2px;">🚗 Kristi's Commute</div>
+                        <div style="color: var(--text-muted); font-size: 0.85rem;" id="commute-route">Calculating route...</div>
+                    </div>
+                    <div style="text-align: right; display: flex; align-items: baseline; gap: 8px;">
+                        <span style="font-size: 2.2rem; font-weight: bold; line-height: 1; color: var(--text-main);" id="commute-time">--</span>
+                        <span style="color: var(--text-muted); font-size: 0.95rem; font-weight: bold;" id="commute-distance">-- mi</span>
+                    </div>
                 </div>
-                <div style="font-size: 4.5rem; line-height: 1;" id="current-icon">☁️</div>
             </div>
 
-            <div class="weather-stats">
-                <div class="stat-item"><span class="stat-label">High/Low:</span> <span class="stat-value" id="current-high-low">--°/--°</span></div>
-                <div class="stat-item"><span class="stat-label">Wind:</span> <span class="stat-value" id="current-wind">-- mph</span></div>
-                <div class="stat-item"><span class="stat-label">Rain Chance:</span> <span class="stat-value" id="current-rain">--%</span></div>
-                <div class="stat-item"><span class="stat-label">Humidity:</span> <span class="stat-value" id="current-humidity">--%</span></div>
-            </div>
-            
-            <h3 style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 15px;">Forecast (Tap for Details)</h3>
-            <div class="forecast-grid" id="forecast-buttons"></div>
-            <div class="weather-detail-pane" id="weather-detail-pane">
-                <div class="detail-header">Select a day</div>
-                <div class="detail-text">Tap a day above to view detailed forecast information.</div>
+            <div class="panel" style="flex-grow: 1;">
+                <h2>☁️ Weather Forecast</h2>
+                <div class="weather-current">
+                    <div class="weather-main">
+                        <div class="weather-temp" id="current-temp">--°</div>
+                        <div class="weather-cond" id="current-cond">Loading...</div>
+                    </div>
+                    <div style="font-size: 3.5rem; line-height: 1;" id="current-icon">☁️</div>
+                </div>
+
+                <div class="weather-stats">
+                    <div class="stat-item"><span class="stat-label">High/Low:</span> <span class="stat-value" id="current-high-low">--°/--°</span></div>
+                    <div class="stat-item"><span class="stat-label">Wind:</span> <span class="stat-value" id="current-wind">-- mph</span></div>
+                    <div class="stat-item"><span class="stat-label">Rain Chance:</span> <span class="stat-value" id="current-rain">--%</span></div>
+                    <div class="stat-item"><span class="stat-label">Humidity:</span> <span class="stat-value" id="current-humidity">--%</span></div>
+                </div>
+                
+                <h3 style="color: var(--text-muted); font-size: 1rem; margin-bottom: 10px;">Forecast (Tap for Details)</h3>
+                <div class="forecast-grid" id="forecast-buttons"></div>
+                <div class="weather-detail-pane" id="weather-detail-pane">
+                    <div class="detail-header">Select a day</div>
+                    <div class="detail-text">Tap a day above to view detailed forecast information.</div>
+                </div>
             </div>
         </div>
 
@@ -377,12 +393,12 @@
 
     <div id="tab-calendar" class="tab-content">
         <div class="panel" style="grid-column: span 2; display: flex; flex-direction: column;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 8px;">
                 <h2 style="margin: 0; border: none; padding: 0;">📅 Full Month View</h2>
                 <div style="display: flex; gap: 10px; align-items: center;">
-                    <button onclick="changeMonth(-1)" class="tab-btn" style="padding: 6px 15px; background: rgba(0,0,0,0.2); border: 1px solid #333;">&larr; Prev</button>
-                    <span id="month-year-display" style="font-size: 1.3rem; font-weight: bold; color: var(--text-main); min-width: 160px; text-align: center;">Month Year</span>
-                    <button onclick="changeMonth(1)" class="tab-btn" style="padding: 6px 15px; background: rgba(0,0,0,0.2); border: 1px solid #333;">Next &rarr;</button>
+                    <button onclick="changeMonth(-1)" class="tab-btn" style="padding: 6px 12px; background: rgba(0,0,0,0.2); border: 1px solid #333;">&larr; Prev</button>
+                    <span id="month-year-display" style="font-size: 1.2rem; font-weight: bold; color: var(--text-main); min-width: 140px; text-align: center;">Month Year</span>
+                    <button onclick="changeMonth(1)" class="tab-btn" style="padding: 6px 12px; background: rgba(0,0,0,0.2); border: 1px solid #333;">Next &rarr;</button>
                 </div>
             </div>
             
@@ -395,7 +411,7 @@
 
         <div class="panel">
             <h2>🏷️ BDT Tracker</h2>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0;">Scanning all events for 'BDT'.</p>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0;">Scanning all events for 'BDT'.</p>
             <div id="bdt-container-tab3" class="bdt-container" style="max-height: 100%; flex-grow: 1; border-top: none;"></div>
         </div>
     </div>
@@ -415,7 +431,7 @@
         // ==========================================
         // CONFIGURATION
         // ==========================================
-        const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHFCSSk3aP1RFTHn6ikXcPa6xSN8o4QkqH6_3lBCs19IobtEc9nF82rl4YQwnSsLev/exec'; // Paste your script URL here
+        const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzpAJQYuX4Q6oRffVvsWwq3mcTe1c0xbluzAa6spd9ZBZ74-048Fl4nOAkpxMZdXqx/exec'; // Paste your script URL here
 
         // --- Tab Switching Logic ---
         function switchTab(tabId) {
@@ -442,7 +458,7 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // --- Live Calendar (List & Grid) ---
+        // --- Live Calendar, Commute & BDT ---
         let globalCalendarEvents = []; 
         let currentMonthView = new Date();
         currentMonthView.setDate(1); // Set to 1st of current month
@@ -463,12 +479,20 @@
                 const data = await res.json();
                 
                 globalCalendarEvents = data.events || [];
+                
+                // Process Commute Data
+                if (data.commute) {
+                    document.getElementById('commute-time').textContent = data.commute.duration.replace(' mins', 'm').replace(' min', 'm');
+                    document.getElementById('commute-distance').textContent = data.commute.distance;
+                    document.getElementById('commute-route').textContent = "Via " + data.commute.summary;
+                }
+
                 renderListCalendar();
                 renderMonthCalendar();
                 renderBDTList();
             } catch (error) {
                 console.error("Google Data fetch error:", error);
-                calContainer.innerHTML = `<p style="color: #ff6b6b; background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 8px;">
+                calContainer.innerHTML = `<p style="color: #ff6b6b; background: rgba(255, 107, 107, 0.1); padding: 10px; border-radius: 6px;">
                                           <b>Connection Blocked</b><br>Check Apps Script Authorization.</p>`;
             }
         }
@@ -579,7 +603,6 @@
                 // Tally up the counts for each person
                 const counts = { Dave: 0, Kristi: 0, Jake: 0, Ryan: 0 };
                 dayEvents.forEach(evt => {
-                    // Match names safely, fallback to Dave if unrecognized
                     if(evt.owner === 'Kristi') counts.Kristi++;
                     else if(evt.owner === 'Jake') counts.Jake++;
                     else if(evt.owner === 'Ryan') counts.Ryan++;
