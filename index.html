@@ -141,27 +141,55 @@
         }
         .calendar-grid-body {
             display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
-            grid-auto-rows: minmax(70px, 1fr); flex-grow: 1; overflow-y: auto; padding-right: 8px;
+            grid-auto-rows: minmax(80px, 1fr); flex-grow: 1; overflow-y: auto; padding-right: 8px;
         }
         .calendar-cell {
             background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 6px;
-            padding: 5px; display: flex; flex-direction: column; overflow: hidden;
+            padding: 8px; display: flex; flex-direction: column; overflow: hidden;
+            cursor: pointer; transition: background 0.2s ease;
         }
+        .calendar-cell:hover { background: rgba(255,255,255,0.08); }
         .calendar-cell.today { border-color: var(--accent-yellow); background: rgba(255, 197, 47, 0.05); }
-        .calendar-cell.empty { background: transparent; border: none; }
-        .cell-date { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 4px; text-align: right; font-weight: bold;}
+        .calendar-cell.empty { background: transparent; border: none; cursor: default; }
+        .calendar-cell.empty:hover { background: transparent; }
+        
+        .cell-date { font-size: 1rem; color: var(--text-muted); margin-bottom: 8px; text-align: right; font-weight: bold;}
         .calendar-cell.today .cell-date { color: var(--accent-yellow); }
         
-        .cell-events { display: flex; flex-direction: column; gap: 3px; overflow-y: auto; flex-grow: 1; }
-        .cell-events::-webkit-scrollbar { display: none; }
-        .mini-event {
-            font-size: 0.7rem; padding: 3px 5px; border-radius: 4px; white-space: nowrap;
-            overflow: hidden; text-overflow: ellipsis; color: #fff;
-            background: rgba(255, 197, 47, 0.2); border-left: 3px solid var(--accent-yellow);
+        /* Event Badges (Names + Dots) */
+        .event-badges-container { display: flex; flex-direction: column; gap: 4px; overflow-y: auto; flex-grow: 1; }
+        .event-badges-container::-webkit-scrollbar { display: none; }
+        .badge-wrapper { display: flex; align-items: center; gap: 6px; }
+        .event-badge {
+            width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: bold; color: #fff; flex-shrink: 0;
+            background: rgba(255, 197, 47, 0.4); border: 1px solid var(--accent-yellow);
         }
-        .mini-event.kristi { background: rgba(255, 118, 117, 0.2); border-left-color: var(--accent-kristi); }
-        .mini-event.jake { background: rgba(0, 184, 148, 0.2); border-left-color: var(--accent-jake); }
-        .mini-event.ryan { background: rgba(162, 155, 254, 0.2); border-left-color: var(--accent-ryan); }
+        .event-badge.kristi { background: rgba(255, 118, 117, 0.4); border-color: var(--accent-kristi); }
+        .event-badge.jake { background: rgba(0, 184, 148, 0.4); border-color: var(--accent-jake); }
+        .event-badge.ryan { background: rgba(162, 155, 254, 0.4); border-color: var(--accent-ryan); }
+        .badge-name { font-size: 0.75rem; font-weight: bold; color: var(--text-main); }
+
+        /* --- Popup Modal Styles --- */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: var(--panel-bg); width: 90%; max-width: 500px; border-radius: var(--border-radius);
+            padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); max-height: 80vh; display: flex; flex-direction: column;
+            border: 1px solid #444;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .modal-header h2 { margin: 0; border: none; padding: 0; }
+        .close-btn { 
+            background: rgba(255,255,255,0.1); border: none; color: var(--text-main); font-size: 1.5rem; 
+            cursor: pointer; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s;
+        }
+        .close-btn:hover { background: rgba(255, 107, 107, 0.8); }
+        .modal-body { overflow-y: auto; flex-grow: 1; padding-right: 5px; }
 
         /* --- BDT Tracker --- */
         .bdt-container {
@@ -372,6 +400,17 @@
         </div>
     </div>
 
+    <div id="day-modal" class="modal-overlay" onclick="closeDayModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modal-title">Date</h2>
+                <button class="close-btn" onclick="closeDayModal(event)">&times;</button>
+            </div>
+            <div id="modal-body" class="modal-body">
+                </div>
+        </div>
+    </div>
+
     <script>
         // ==========================================
         // CONFIGURATION
@@ -385,7 +424,6 @@
             document.getElementById(`tab-${tabId}`).classList.add('active');
             document.getElementById(`btn-${tabId}`).classList.add('active');
             
-            // Re-render grid to ensure dimensions are correct when unhidden
             if(tabId === 'calendar') renderMonthCalendar();
         }
 
@@ -496,7 +534,7 @@
             container.innerHTML = htmlString;
         }
 
-        // 2. Renders the Paper Calendar Grid on Tab 3
+        // 2. Renders the Paper Calendar Grid on Tab 3 with Colored Dot Badges and Names
         function changeMonth(offset) {
             currentMonthView.setMonth(currentMonthView.getMonth() + offset);
             renderMonthCalendar();
@@ -527,7 +565,10 @@
                 const isToday = cellDate.toDateString() === today.toDateString();
                 const todayClass = isToday ? 'today' : '';
 
-                let cellHtml = `<div class="calendar-cell ${todayClass}"><div class="cell-date">${d}</div><div class="cell-events">`;
+                // Add onclick listener to open the modal popup for this specific date
+                let cellHtml = `<div class="calendar-cell ${todayClass}" onclick="openDayModal(${year}, ${month}, ${d})">
+                                    <div class="cell-date">${d}</div>
+                                    <div class="event-badges-container">`;
 
                 // Find events for this specific day
                 const dayEvents = globalCalendarEvents.filter(evt => {
@@ -535,18 +576,70 @@
                     return eDate.getFullYear() === year && eDate.getMonth() === month && eDate.getDate() === d;
                 });
 
+                // Tally up the counts for each person
+                const counts = { Dave: 0, Kristi: 0, Jake: 0, Ryan: 0 };
                 dayEvents.forEach(evt => {
-                    let ownerClass = evt.owner.toLowerCase() === 'dave' ? '' : evt.owner.toLowerCase();
-                    let timeStr = evt.isAllDay ? "" : new Date(evt.time).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'});
-                    let displayTitle = (timeStr ? timeStr + ' ' : '') + evt.title;
-                    cellHtml += `<div class="mini-event ${ownerClass}" title="${evt.title}">${displayTitle}</div>`;
+                    // Match names safely, fallback to Dave if unrecognized
+                    if(evt.owner === 'Kristi') counts.Kristi++;
+                    else if(evt.owner === 'Jake') counts.Jake++;
+                    else if(evt.owner === 'Ryan') counts.Ryan++;
+                    else counts.Dave++; 
                 });
+
+                // Generate colored circle badges with the count AND name
+                if (counts.Dave > 0) cellHtml += `<div class="badge-wrapper"><div class="event-badge">${counts.Dave}</div><span class="badge-name">Dave</span></div>`;
+                if (counts.Kristi > 0) cellHtml += `<div class="badge-wrapper"><div class="event-badge kristi">${counts.Kristi}</div><span class="badge-name">Kristi</span></div>`;
+                if (counts.Jake > 0) cellHtml += `<div class="badge-wrapper"><div class="event-badge jake">${counts.Jake}</div><span class="badge-name">Jake</span></div>`;
+                if (counts.Ryan > 0) cellHtml += `<div class="badge-wrapper"><div class="event-badge ryan">${counts.Ryan}</div><span class="badge-name">Ryan</span></div>`;
 
                 cellHtml += `</div></div>`;
                 gridHtml += cellHtml;
             }
 
             container.innerHTML = gridHtml;
+        }
+
+        // --- Day Modal Popup Functions ---
+        function openDayModal(year, month, day) {
+            const modalDate = new Date(year, month, day);
+            document.getElementById('modal-title').textContent = modalDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+            
+            // Filter events strictly for the clicked date
+            const dayEvents = globalCalendarEvents.filter(evt => {
+                const eDate = new Date(evt.time);
+                return eDate.getFullYear() === year && eDate.getMonth() === month && eDate.getDate() === day;
+            });
+
+            const modalBody = document.getElementById('modal-body');
+            
+            if(dayEvents.length === 0) {
+                modalBody.innerHTML = `<p style="color: var(--text-muted); text-align: center; margin-top: 40px; font-style: italic;">No events scheduled for this day.</p>`;
+            } else {
+                let html = "";
+                dayEvents.forEach(evt => {
+                    let ownerLower = evt.owner.toLowerCase();
+                    let badge = ownerLower !== 'dave' ? `<span class="owner-badge badge-${ownerLower}">(${evt.owner.charAt(0).toUpperCase()})</span>` : '';
+                    let eventClass = ownerLower !== 'dave' ? `event ${ownerLower}` : 'event';
+                    
+                    let timeStr = evt.isAllDay ? "All Day" : new Date(evt.time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+                    html += `
+                        <div class="${eventClass}">
+                            <div class="event-time">${timeStr}</div>
+                            <div class="event-title">${badge}${evt.title}</div>
+                        </div>`;
+                });
+                modalBody.innerHTML = html;
+            }
+
+            // Show the modal overlay
+            document.getElementById('day-modal').classList.add('active');
+        }
+
+        function closeDayModal(e) {
+            // Close if 'X' is clicked, OR if the dark overlay outside the box is clicked
+            if (e && e.target.id !== 'day-modal' && !e.target.classList.contains('close-btn')) return;
+            document.getElementById('day-modal').classList.remove('active');
         }
 
         // 3. Populates BDT Trackers on both Tabs
@@ -567,7 +660,6 @@
                 });
             }
             
-            // Inject into both tabs
             document.getElementById('bdt-container-home').innerHTML = html;
             document.getElementById('bdt-container-tab3').innerHTML = html;
         }
@@ -723,7 +815,6 @@
                     });
                     document.getElementById('brewers-pitching-table').innerHTML = pitchingHtml;
 
-                    // Clone Box Score to Tab 2
                     document.getElementById('box-score-clone').innerHTML = document.querySelector('.box-score-container').innerHTML;
                 }
 
@@ -757,7 +848,7 @@
                 }
                 scheduleHtml += `</table>`;
                 document.getElementById('upcoming-schedule-container').innerHTML = scheduleHtml;
-                document.getElementById('schedule-clone').innerHTML = scheduleHtml; // Clone to Tab 2
+                document.getElementById('schedule-clone').innerHTML = scheduleHtml; 
 
                 // C. Process Standings
                 const currentYear = today.getFullYear();
@@ -776,7 +867,7 @@
                     
                     const finalHtml = `<table class="stats-table">${stdHtml}</table>`;
                     document.getElementById('nl-central-table').innerHTML = stdHtml;
-                    document.getElementById('standings-clone').innerHTML = finalHtml; // Clone to Tab 2
+                    document.getElementById('standings-clone').innerHTML = finalHtml;
                 }
             } catch (error) { console.error("MLB fetch error:", error); }
         }
