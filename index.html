@@ -24,7 +24,7 @@
             color: var(--text-main);
             font-family: var(--font-family);
             margin: 0;
-            padding: 15px; /* Tighter padding for iPad */
+            padding: 15px;
             height: 100vh;
             box-sizing: border-box;
             overflow: hidden; 
@@ -44,7 +44,7 @@
             align-items: flex-end;
             padding: 0 5px 10px 5px;
             border-bottom: 2px solid var(--panel-bg);
-            margin-bottom: 15px; /* Tighter margin */
+            margin-bottom: 15px; 
             flex-shrink: 0;
         }
 
@@ -84,7 +84,7 @@
         .tab-content {
             display: none; 
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px; /* Tighter gap for iPad */
+            gap: 15px; 
             height: 100%;
             overflow: hidden;
         }
@@ -93,7 +93,7 @@
         .panel {
             background-color: var(--panel-bg);
             border-radius: var(--border-radius);
-            padding: 15px 18px; /* Tighter padding for iPad */
+            padding: 15px 18px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
@@ -156,7 +156,7 @@
         .cell-date { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 6px; text-align: right; font-weight: bold;}
         .calendar-cell.today .cell-date { color: var(--accent-yellow); }
         
-        /* Event Badges (Names + Dots) */
+        /* Event Badges */
         .event-badges-container { display: flex; flex-direction: column; gap: 4px; overflow-y: auto; flex-grow: 1; }
         .event-badges-container::-webkit-scrollbar { display: none; }
         .badge-wrapper { display: flex; align-items: center; gap: 6px; }
@@ -231,6 +231,23 @@
         .detail-text { color: var(--text-muted); line-height: 1.3; font-size: 0.9rem;}
         .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; font-size: 0.85rem; }
 
+        /* Full Weather Tab Elements */
+        .weather-full-nav {
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 15px;
+        }
+        .weather-full-nav .forecast-day {
+            padding: 12px 5px;
+        }
+        .hourly-table {
+            width: 100%; border-collapse: collapse; margin-top: 15px; background: rgba(0,0,0,0.2); border-radius: 8px; overflow: hidden;
+        }
+        .hourly-table th, .hourly-table td {
+            padding: 10px; text-align: center; border-bottom: 1px solid #333; font-size: 0.9rem;
+        }
+        .hourly-table th { color: var(--text-muted); background: rgba(255,255,255,0.05); font-weight: normal; }
+        .hourly-table td { font-weight: bold; }
+        .hourly-table tr:last-child td { border-bottom: none; }
+
         /* --- Sports Elements --- */
         .sports-section { margin-bottom: 15px; flex-shrink: 0;}
         .sports-section h3 { margin: 0 0 8px 0; font-size: 1rem; color: var(--text-muted); }
@@ -267,6 +284,7 @@
         
         <div class="tab-nav">
             <button class="tab-btn active" onclick="switchTab('home')" id="btn-home">🏠 Main Dashboard</button>
+            <button class="tab-btn" onclick="switchTab('weather')" id="btn-weather">☁️ Weather</button>
             <button class="tab-btn" onclick="switchTab('sports')" id="btn-sports">⚾ Sports Hub</button>
             <button class="tab-btn" onclick="switchTab('calendar')" id="btn-calendar">📅 Full Calendar</button>
         </div>
@@ -300,7 +318,7 @@
             </div>
 
             <div class="panel" style="flex-grow: 1;">
-                <h2>☁️ Weather Forecast</h2>
+                <h2>☁️ Weather Quick Look</h2>
                 <div class="weather-current">
                     <div class="weather-main">
                         <div class="weather-temp" id="current-temp">--°</div>
@@ -359,6 +377,24 @@
                     <tr><th>Team</th><th>W</th><th>L</th><th>GB</th></tr>
                     <tr><td colspan="4" style="text-align:center;">Loading standings...</td></tr>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-weather" class="tab-content">
+        <div class="panel" style="grid-column: span 2; display: flex; flex-direction: column;">
+            <h2>🌦️ 7-Day Detailed Forecast</h2>
+            <div class="weather-full-nav" id="weather-full-nav">
+                </div>
+            <div id="full-weather-details" style="flex-grow: 1; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 8px; overflow-y: auto;">
+                <h3 style="color: var(--text-muted); text-align: center; margin-top: 40px;">Select a day to view hourly details</h3>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>📡 Live Radar</h2>
+            <div style="flex-grow: 1; border-radius: 8px; overflow: hidden; position: relative; border: 1px solid #333;">
+                <iframe src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=°F&metricWind=mph&zoom=8&overlay=radar&product=radar&level=surface&lat=42.6828&lon=-89.0187&detailLat=42.6828&detailLon=-89.0187" width="100%" height="100%" frameborder="0" style="border:0; position: absolute; top:0; left:0;"></iframe>
             </div>
         </div>
     </div>
@@ -431,7 +467,7 @@
         // ==========================================
         // CONFIGURATION
         // ==========================================
-        const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzpAJQYuX4Q6oRffVvsWwq3mcTe1c0xbluzAa6spd9ZBZ74-048Fl4nOAkpxMZdXqx/exec'; // Paste your script URL here
+        const GOOGLE_APP_SCRIPT_URL = 'YOUR_WEB_APP_URL_HERE'; // Paste your script URL here
 
         // --- Tab Switching Logic ---
         function switchTab(tabId) {
@@ -461,14 +497,14 @@
         // --- Live Calendar, Commute & BDT ---
         let globalCalendarEvents = []; 
         let currentMonthView = new Date();
-        currentMonthView.setDate(1); // Set to 1st of current month
+        currentMonthView.setDate(1);
 
         async function fetchGoogleData() {
             const calContainer = document.getElementById('calendar-container');
             
             if (GOOGLE_APP_SCRIPT_URL === 'YOUR_WEB_APP_URL_HERE') {
                 calContainer.innerHTML = `<p style="color: var(--accent-yellow); background: rgba(255, 197, 47, 0.1); padding: 15px; border-radius: 8px;">
-                                       ⚠️ <b>Setup Required</b><br>Paste your Google Apps Script URL.</p>`;
+                                        ⚠️ <b>Setup Required</b><br>Paste your Google Apps Script URL.</p>`;
                 return;
             }
 
@@ -480,7 +516,6 @@
                 
                 globalCalendarEvents = data.events || [];
                 
-                // Process Commute Data
                 if (data.commute) {
                     document.getElementById('commute-time').textContent = data.commute.duration.replace(' mins', 'm').replace(' min', 'm');
                     document.getElementById('commute-distance').textContent = data.commute.distance;
@@ -497,7 +532,6 @@
             }
         }
 
-        // 1. Renders the classic list on Tab 1
         function renderListCalendar() {
             const container = document.getElementById('calendar-container');
             const searchQuery = document.getElementById('calendar-search').value.toLowerCase();
@@ -558,7 +592,6 @@
             container.innerHTML = htmlString;
         }
 
-        // 2. Renders the Paper Calendar Grid on Tab 3 with Colored Dot Badges and Names
         function changeMonth(offset) {
             currentMonthView.setMonth(currentMonthView.getMonth() + offset);
             renderMonthCalendar();
@@ -572,35 +605,30 @@
             
             document.getElementById('month-year-display').textContent = `${monthNames[month]} ${year}`;
 
-            const firstDay = new Date(year, month, 1).getDay(); // 0-6 (Sun-Sat)
+            const firstDay = new Date(year, month, 1).getDay(); 
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const today = new Date();
 
             let gridHtml = "";
 
-            // Empty cells before the 1st
             for (let i = 0; i < firstDay; i++) {
                 gridHtml += `<div class="calendar-cell empty"></div>`;
             }
 
-            // Actual days
             for (let d = 1; d <= daysInMonth; d++) {
                 const cellDate = new Date(year, month, d);
                 const isToday = cellDate.toDateString() === today.toDateString();
                 const todayClass = isToday ? 'today' : '';
 
-                // Add onclick listener to open the modal popup for this specific date
                 let cellHtml = `<div class="calendar-cell ${todayClass}" onclick="openDayModal(${year}, ${month}, ${d})">
                                     <div class="cell-date">${d}</div>
                                     <div class="event-badges-container">`;
 
-                // Find events for this specific day
                 const dayEvents = globalCalendarEvents.filter(evt => {
                     const eDate = new Date(evt.time);
                     return eDate.getFullYear() === year && eDate.getMonth() === month && eDate.getDate() === d;
                 });
 
-                // Tally up the counts for each person
                 const counts = { Dave: 0, Kristi: 0, Jake: 0, Ryan: 0 };
                 dayEvents.forEach(evt => {
                     if(evt.owner === 'Kristi') counts.Kristi++;
@@ -609,7 +637,6 @@
                     else counts.Dave++; 
                 });
 
-                // Generate colored circle badges with the count AND name
                 if (counts.Dave > 0) cellHtml += `<div class="badge-wrapper"><div class="event-badge">${counts.Dave}</div><span class="badge-name">Dave</span></div>`;
                 if (counts.Kristi > 0) cellHtml += `<div class="badge-wrapper"><div class="event-badge kristi">${counts.Kristi}</div><span class="badge-name">Kristi</span></div>`;
                 if (counts.Jake > 0) cellHtml += `<div class="badge-wrapper"><div class="event-badge jake">${counts.Jake}</div><span class="badge-name">Jake</span></div>`;
@@ -622,12 +649,10 @@
             container.innerHTML = gridHtml;
         }
 
-        // --- Day Modal Popup Functions ---
         function openDayModal(year, month, day) {
             const modalDate = new Date(year, month, day);
             document.getElementById('modal-title').textContent = modalDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
             
-            // Filter events strictly for the clicked date
             const dayEvents = globalCalendarEvents.filter(evt => {
                 const eDate = new Date(evt.time);
                 return eDate.getFullYear() === year && eDate.getMonth() === month && eDate.getDate() === day;
@@ -655,17 +680,14 @@
                 modalBody.innerHTML = html;
             }
 
-            // Show the modal overlay
             document.getElementById('day-modal').classList.add('active');
         }
 
         function closeDayModal(e) {
-            // Close if 'X' is clicked, OR if the dark overlay outside the box is clicked
             if (e && e.target.id !== 'day-modal' && !e.target.classList.contains('close-btn')) return;
             document.getElementById('day-modal').classList.remove('active');
         }
 
-        // 3. Populates BDT Trackers on both Tabs
         function renderBDTList() {
             const bdtEvents = globalCalendarEvents.filter(evt => 
                 (evt.description && evt.description.includes('BDT')) || 
@@ -690,7 +712,7 @@
         document.getElementById('calendar-search').addEventListener('input', renderListCalendar);
 
         fetchGoogleData();
-        setInterval(fetchGoogleData, 900000); // 15 mins
+        setInterval(fetchGoogleData, 900000); 
 
         // --- Live Weather (Open-Meteo API) ---
         const getWeatherInfo = (code) => {
@@ -705,20 +727,31 @@
             return { desc: 'Unknown', icon: '☁️' };
         };
 
+        const formatTimeAmPm = (dateString) => {
+            const date = new Date(dateString);
+            let hours = date.getHours();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            return `${hours} ${ampm}`;
+        };
+
         let storedForecastData = {};
 
         async function fetchWeather() {
             const lat = 42.6828;
             const lon = -89.0187;
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FChicago`;
+            // Added hourly data and extra daily endpoints (uv index, sunrise, sunset) to URL
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&hourly=temperature_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,uv_index_max,sunrise,sunset&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FChicago`;
 
             try {
                 const res = await fetch(url);
                 const data = await res.json();
                 const current = data.current;
                 const daily = data.daily;
+                const hourly = data.hourly;
                 const info = getWeatherInfo(current.weather_code);
                 
+                // Update Home Tab Current Weather
                 document.getElementById('current-temp').textContent = `${Math.round(current.temperature_2m)}°`;
                 document.getElementById('current-cond').textContent = info.desc;
                 document.getElementById('current-icon').textContent = info.icon;
@@ -727,12 +760,16 @@
                 document.getElementById('current-rain').textContent = `${daily.precipitation_probability_max[0]}%`;
                 document.getElementById('current-humidity').textContent = `${current.relative_humidity_2m}%`;
 
-                const buttonsContainer = document.getElementById('forecast-buttons');
-                buttonsContainer.innerHTML = '';
+                const homeButtonsContainer = document.getElementById('forecast-buttons');
+                const fullNavContainer = document.getElementById('weather-full-nav');
+                homeButtonsContainer.innerHTML = '';
+                fullNavContainer.innerHTML = '';
                 storedForecastData = {};
+                
                 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-                for (let i = 0; i < 4; i++) {
+                // Loop through all 7 days for the Weather Tab
+                for (let i = 0; i < 7; i++) {
                     const dateObj = new Date(daily.time[i] + 'T00:00:00');
                     const dayName = i === 0 ? 'Today' : daysOfWeek[dateObj.getDay()];
                     const dayInfo = getWeatherInfo(daily.weather_code[i]);
@@ -740,34 +777,108 @@
                     const low = Math.round(daily.temperature_2m_min[i]);
                     const rain = daily.precipitation_probability_max[i];
                     const wind = Math.round(daily.wind_speed_10m_max[i]);
+                    const uv = daily.uv_index_max[i];
+                    
+                    const sunrise = new Date(daily.sunrise[i]).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'});
+                    const sunset = new Date(daily.sunset[i]).toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'});
+
+                    // Grab specific hours for the hourly breakdown (8am, 12pm, 4pm, 8pm)
+                    const hourStartIndex = i * 24;
+                    const hourlySlice = [
+                        { time: formatTimeAmPm(hourly.time[hourStartIndex + 8]), temp: Math.round(hourly.temperature_2m[hourStartIndex + 8]), icon: getWeatherInfo(hourly.weather_code[hourStartIndex + 8]).icon, pop: hourly.precipitation_probability[hourStartIndex + 8] },
+                        { time: formatTimeAmPm(hourly.time[hourStartIndex + 12]), temp: Math.round(hourly.temperature_2m[hourStartIndex + 12]), icon: getWeatherInfo(hourly.weather_code[hourStartIndex + 12]).icon, pop: hourly.precipitation_probability[hourStartIndex + 12] },
+                        { time: formatTimeAmPm(hourly.time[hourStartIndex + 16]), temp: Math.round(hourly.temperature_2m[hourStartIndex + 16]), icon: getWeatherInfo(hourly.weather_code[hourStartIndex + 16]).icon, pop: hourly.precipitation_probability[hourStartIndex + 16] },
+                        { time: formatTimeAmPm(hourly.time[hourStartIndex + 20]), temp: Math.round(hourly.temperature_2m[hourStartIndex + 20]), icon: getWeatherInfo(hourly.weather_code[hourStartIndex + 20]).icon, pop: hourly.precipitation_probability[hourStartIndex + 20] }
+                    ];
 
                     const dayId = `day-${i}`;
                     storedForecastData[dayId] = {
-                        title: `${dayName} Forecast`,
+                        title: `${i === 0 ? 'Today' : dateObj.toLocaleDateString('en-US', {weekday: 'long', month: 'short', day: 'numeric'})}`,
                         desc: `Expect ${dayInfo.desc.toLowerCase()} with a high of ${high}° and a low of ${low}°.`,
                         rain: `${rain}%`,
-                        wind: `${wind} mph`
+                        wind: `${wind} mph`,
+                        uv: uv,
+                        sunrise: sunrise,
+                        sunset: sunset,
+                        hourly: hourlySlice,
+                        icon: dayInfo.icon,
+                        highLow: `${high}° / ${low}°`
                     };
 
-                    const btn = document.createElement('div');
-                    btn.className = `forecast-day ${i === 0 ? 'active' : ''}`;
-                    btn.onclick = function() { updateWeatherDetail(dayId, this); };
-                    btn.innerHTML = `<div class="day-name">${dayName}</div><div class="day-icon">${dayInfo.icon}</div><div class="day-temps">${high}° / ${low}°</div>`;
-                    buttonsContainer.appendChild(btn);
+                    // Button for Home Tab (Only first 4 days)
+                    if (i < 4) {
+                        const btnHome = document.createElement('div');
+                        btnHome.className = `forecast-day ${i === 0 ? 'active' : ''}`;
+                        btnHome.onclick = function() { updateHomeWeatherDetail(dayId, this); };
+                        btnHome.innerHTML = `<div class="day-name">${dayName}</div><div class="day-icon">${dayInfo.icon}</div><div class="day-temps">${high}° / ${low}°</div>`;
+                        homeButtonsContainer.appendChild(btnHome);
+                        if (i === 0) updateHomeWeatherDetail(dayId, btnHome);
+                    }
 
-                    if (i === 0) updateWeatherDetail(dayId, btn);
+                    // Button for Full Weather Tab (All 7 days)
+                    const btnFull = document.createElement('div');
+                    btnFull.className = `forecast-day ${i === 0 ? 'active' : ''}`;
+                    btnFull.onclick = function() { updateFullWeatherDetail(dayId, this); };
+                    btnFull.innerHTML = `<div class="day-name">${dayName}</div><div class="day-icon">${dayInfo.icon}</div><div class="day-temps" style="color:var(--accent-yellow)">${high}°</div>`;
+                    fullNavContainer.appendChild(btnFull);
+                    if (i === 0) updateFullWeatherDetail(dayId, btnFull);
                 }
             } catch (error) { console.error("Weather fetch failed", error); }
         }
 
-        function updateWeatherDetail(dayId, element) {
-            document.querySelectorAll('.forecast-day').forEach(btn => btn.classList.remove('active'));
+        // Home Tab Weather Pane Update
+        function updateHomeWeatherDetail(dayId, element) {
+            document.querySelectorAll('#forecast-buttons .forecast-day').forEach(btn => btn.classList.remove('active'));
             if(element) element.classList.add('active');
             const data = storedForecastData[dayId];
             if(!data) return;
             document.getElementById('weather-detail-pane').innerHTML = `
                 <div class="detail-header">${data.title}</div><div class="detail-text">${data.desc}</div>
                 <div class="detail-grid"><div><span style="color: var(--text-muted);">Rain:</span> ${data.rain}</div><div><span style="color: var(--text-muted);">Max Wind:</span> ${data.wind}</div></div>`;
+        }
+
+        // New Weather Tab Details Update
+        function updateFullWeatherDetail(dayId, element) {
+            document.querySelectorAll('#weather-full-nav .forecast-day').forEach(btn => btn.classList.remove('active'));
+            if(element) element.classList.add('active');
+            const data = storedForecastData[dayId];
+            if(!data) return;
+            
+            let hourlyRows = '';
+            data.hourly.forEach(h => {
+                hourlyRows += `<tr><td>${h.time}</td><td>${h.icon}</td><td>${h.temp}°</td><td>${h.pop}%</td></tr>`;
+            });
+
+            document.getElementById('full-weather-details').innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div>
+                        <h2 style="border: none; margin: 0; padding: 0; font-size: 1.6rem; color: var(--text-main);">${data.title}</h2>
+                        <div style="color: var(--text-muted); margin-top: 5px;">${data.desc}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 2.5rem; line-height: 1;">${data.icon}</div>
+                        <div style="color: var(--accent-yellow); font-weight: bold; margin-top: 5px;">${data.highLow}</div>
+                    </div>
+                </div>
+
+                <div class="weather-stats" style="grid-template-columns: 1fr 1fr 1fr; margin-bottom: 20px;">
+                    <div class="stat-item"><span class="stat-label">Rain:</span> <span class="stat-value">${data.rain}</span></div>
+                    <div class="stat-item"><span class="stat-label">Wind:</span> <span class="stat-value">${data.wind}</span></div>
+                    <div class="stat-item"><span class="stat-label">UV Index:</span> <span class="stat-value">${data.uv}</span></div>
+                    <div class="stat-item" style="grid-column: span 3; border-top: 1px solid #333; padding-top: 8px; margin-top: 4px;">
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                            <span>🌅 <span style="color: var(--text-muted);">Sunrise:</span> ${data.sunrise}</span>
+                            <span>🌇 <span style="color: var(--text-muted);">Sunset:</span> ${data.sunset}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--accent-yellow); font-size: 1.1rem; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">Hourly Breakdown</h3>
+                <table class="hourly-table">
+                    <tr><th>Time</th><th>Conditions</th><th>Temp</th><th>Rain %</th></tr>
+                    ${hourlyRows}
+                </table>
+            `;
         }
 
         fetchWeather();
@@ -796,7 +907,6 @@
                     if (completedGames.length > 0) lastGame = completedGames[completedGames.length - 1];
                 }
 
-                // A. Process Last Game & Box Score
                 if (lastGame) {
                     const isHome = lastGame.teams.home.team.id === teamId;
                     const oppAbbrev = isHome ? lastGame.teams.away.team.abbreviation : lastGame.teams.home.team.abbreviation;
@@ -841,7 +951,6 @@
                     document.getElementById('box-score-clone').innerHTML = document.querySelector('.box-score-container').innerHTML;
                 }
 
-                // B. Process Upcoming Schedule
                 let scheduleHtml = `<table class="stats-table schedule-table">
                     <tr><th>Date</th><th>Opponent</th><th>Time</th><th>Probable Pitchers</th></tr>`;
                 
@@ -873,7 +982,6 @@
                 document.getElementById('upcoming-schedule-container').innerHTML = scheduleHtml;
                 document.getElementById('schedule-clone').innerHTML = scheduleHtml; 
 
-                // C. Process Standings
                 const currentYear = today.getFullYear();
                 const stdUrl = `https://statsapi.mlb.com/api/v1/standings?leagueId=104&season=${currentYear}`;
                 const stdRes = await fetch(stdUrl);
@@ -895,7 +1003,7 @@
             } catch (error) { console.error("MLB fetch error:", error); }
         }
         fetchBrewersData();
-        setInterval(fetchBrewersData, 1800000); // 30 mins
+        setInterval(fetchBrewersData, 1800000); 
 
     </script>
 </body>
