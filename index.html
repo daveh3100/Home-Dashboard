@@ -272,6 +272,24 @@
         .schedule-table th, .schedule-table td { text-align: left !important; }
         .stats-table tr.highlight { background: rgba(255, 197, 47, 0.1); font-weight: bold; color: var(--accent-yellow); }
 
+        /* Fullscreen Button */
+        .fullscreen-btn {
+            margin-left: auto;
+            background: rgba(255, 197, 47, 0.1);
+            color: var(--accent-yellow);
+            border: 1px solid var(--accent-yellow);
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        .fullscreen-btn:hover {
+            background: var(--accent-yellow);
+            color: var(--bg-color);
+        }
+
     </style>
 </head>
 <body>
@@ -392,8 +410,11 @@
         </div>
 
         <div class="panel">
-            <h2>📡 Live Radar</h2>
-            <div style="flex-grow: 1; border-radius: 8px; overflow: hidden; position: relative; border: 1px solid #333;">
+            <h2>
+                📡 Live Radar
+                <button class="fullscreen-btn" onclick="toggleFullScreen()">⛶ Fullscreen</button>
+            </h2>
+            <div id="radar-container" style="flex-grow: 1; border-radius: 8px; overflow: hidden; position: relative; border: 1px solid #333; background: var(--bg-color);">
                 <iframe src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=°F&metricWind=mph&zoom=8&overlay=radar&product=radar&level=surface&lat=42.6828&lon=-89.0187&detailLat=42.6828&detailLon=-89.0187" width="100%" height="100%" frameborder="0" style="border:0; position: absolute; top:0; left:0;"></iframe>
             </div>
         </div>
@@ -467,7 +488,7 @@
         // ==========================================
         // CONFIGURATION
         // ==========================================
-        const GOOGLE_APP_SCRIPT_URL = 'YOUR_WEB_APP_URL_HERE'; // Paste your script URL here
+        const GOOGLE_APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzpAJQYuX4Q6oRffVvsWwq3mcTe1c0xbluzAa6spd9ZBZ74-048Fl4nOAkpxMZdXqx/exec'; // Paste your script URL here
 
         // --- Tab Switching Logic ---
         function switchTab(tabId) {
@@ -494,6 +515,25 @@
         setInterval(updateClock, 1000);
         updateClock();
 
+        // --- Fullscreen Radar Toggle ---
+        function toggleFullScreen() {
+            const radarContainer = document.getElementById('radar-container');
+            
+            if (!document.fullscreenElement) {
+                if (radarContainer.requestFullscreen) {
+                    radarContainer.requestFullscreen();
+                } else if (radarContainer.webkitRequestFullscreen) { /* Safari */
+                    radarContainer.webkitRequestFullscreen();
+                } else if (radarContainer.msRequestFullscreen) { /* IE11 */
+                    radarContainer.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
         // --- Live Calendar, Commute & BDT ---
         let globalCalendarEvents = []; 
         let currentMonthView = new Date();
@@ -504,7 +544,7 @@
             
             if (GOOGLE_APP_SCRIPT_URL === 'YOUR_WEB_APP_URL_HERE') {
                 calContainer.innerHTML = `<p style="color: var(--accent-yellow); background: rgba(255, 197, 47, 0.1); padding: 15px; border-radius: 8px;">
-                                        ⚠️ <b>Setup Required</b><br>Paste your Google Apps Script URL.</p>`;
+                                        ⚠️ <b>Setup Required</b><br>Paste your Google Apps Script URL in the Javascript Config section.</p>`;
                 return;
             }
 
@@ -740,7 +780,6 @@
         async function fetchWeather() {
             const lat = 42.6828;
             const lon = -89.0187;
-            // Added hourly data and extra daily endpoints (uv index, sunrise, sunset) to URL
             const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&hourly=temperature_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,uv_index_max,sunrise,sunset&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FChicago`;
 
             try {
